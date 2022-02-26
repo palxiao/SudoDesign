@@ -1,0 +1,64 @@
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: #333333;
+  font-family: Hiragino Sans GB, Hiragino Sans GB W3, Arial, Microsoft Yahei, STHeiti, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  // font-size: 14px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  //取消浏览器记住密码的样式
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+a {
+  text-decoration: none;
+}
+ul,
+ol,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+input {
+  outline: 0;
+  &:-moz-focusring {
+    outline: 0;
+  }
+}
+button {
+  outline: 0;
+  &:-moz-focusring {
+    outline: 0;
+  }
+}
+textarea {
+  outline: 0;
+}
+p {
+  max-height: 100%;
+}
