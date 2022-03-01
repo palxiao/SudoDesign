@@ -240,7 +240,7 @@ export default defineComponent({
     padding: 60px;
     position: relative;
     .design-canvas {
-      transition: all 0.3s;
+      // transition: all 0.3s;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
