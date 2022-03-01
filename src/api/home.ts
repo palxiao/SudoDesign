@@ -3,14 +3,14 @@
  * @Date: 2021-08-19 18:43:22
  * @Description:
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-22 09:53:26
+ * @LastEditTime: 2022-03-01 11:22:18
  * @site: book.palxp.com / blog.palxp.com
  */
 import fetch from '@/utils/axios'
 
 // const isDev = process.env.NODE_ENV === 'development'
-// export const download = (params: Type.Object = {}) => `http://localhost:7001/api/screenshots?id=${params.id}&width=${params.width}&height=${params.height}`
-export const download = (params: Type.Object = {}) => `https://app.palxp.com:8886/api/screenshots?id=${params.id}&width=${params.width}&height=${params.height}`
+export const download = (params: Type.Object = {}) => `http://localhost:7001/api/screenshots?id=${params.id}&width=${params.width}&height=${params.height}`
+// export const download = (params: Type.Object = {}) => `https://app.palxp.com:8886/api/screenshots?id=${params.id}&width=${params.width}&height=${params.height}`
 
 // 获取模板列表
 // export const getTempList = (params: Type.Object = {}) => fetch('https://app.palxp.com:8887/spider/list', params, 'get')
@@ -32,3 +32,6 @@ export const saveWorks = (params: Type.Object = {}) => fetch('design/save', para
 
 // 获取作品
 export const getWorks = (params: Type.Object = {}) => fetch('design/poster', params, 'get')
+
+// 作品列表
+export const getMyDesign = (params: Type.Object = {}) => fetch('design/my', params, 'get')

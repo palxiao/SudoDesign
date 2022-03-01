@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 19:10:06
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 23:20:33
+ * @LastEditTime: 2022-03-01 10:48:43
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -24,7 +24,7 @@
         </li>
       </ul>
     </el-popover> -->
-    <el-popover placement="bottom" width="auto">
+    <el-popover placement="bottom-end" width="auto">
       <!-- 单列表 -->
       <ul v-if="data && Array.isArray(data)" class="list-ul">
         <li v-for="listItem in data" :key="typeof listItem === 'object' ? listItem.alias : listItem" :class="{ active: listItem == innerValue }" @click="selectItem(listItem)">

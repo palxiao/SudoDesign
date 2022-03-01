@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 16:47:49
+ * @LastEditTime: 2022-03-01 15:37:23
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -18,8 +18,8 @@
     </template>
     <!-- <el-button size="small" @click="draw">绘制(测试)</el-button>
     <div style="margin: 0 1rem; color: #999">|</div> -->
-    <el-button :disabled="tempEditing" @click="save(false)">保存</el-button>
-    <el-button :disabled="tempEditing" type="primary" @click="download">下载作品</el-button>
+    <el-button class="primary-btn" :disabled="tempEditing" @click="save(false)">保存</el-button>
+    <el-button class="primary-btn" :disabled="tempEditing" type="primary" @click="download">下载作品</el-button>
   </div>
   <!-- 生成图片弹窗组件 -->
   <SaveImage ref="canvasImage" />
@@ -53,8 +53,7 @@ export default defineComponent({
       console.log(proxy?.dPage, proxy?.dWidgets)
       const { id, tempid } = route.query
       // const cover = simple ? undefined : await proxy?.draw()
-      const cover = ''
-      const { id: newId, stat, msg } = await api.home.saveWorks({ id, title: proxy.title || '未命名设计', data: JSON.stringify({ page: proxy.dPage, widgets: proxy.dWidgets }), cover, temp_id: tempid })
+      const { id: newId, stat, msg } = await api.home.saveWorks({ id, title: proxy.title || '未命名设计', data: JSON.stringify({ page: proxy.dPage, widgets: proxy.dWidgets }), temp_id: tempid, width: proxy.dPage.width, height: proxy.dPage.height })
       stat != 0 ? useNotification('保存成功', '可在"我的设计"中查看') : useNotification('保存失败', msg, 'error')
       !id && router.push({ path: '/home', query: { id: newId }, replace: true })
     }
@@ -107,7 +106,7 @@ export default defineComponent({
       if (this.$route.name !== 'Draw') {
         await useFontStore().init() // 初始化加载字体
       }
-      const apiName = id ? 'getWorks' : 'getTempDetail'
+      const apiName = tempId && !id ? 'getTempDetail' : 'getWorks'
       if (!id && !tempId) {
         cb()
         return
@@ -175,5 +174,8 @@ export default defineComponent({
       border-color: #e8eaec;
     }
   }
+}
+.primary-btn {
+  transform: scale(0.95);
 }
 </style>

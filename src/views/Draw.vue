@@ -44,9 +44,13 @@ export default defineComponent({
       if (this.$route.query.id) {
         const { data } = await api.home.getWorks({ id: this.$route.query.id })
         const content = JSON.parse(data)
+
+        content.page.backgroundImage && (content.page.backgroundImage += '@small')
+        this.compressImages(content.widgets)
         this.$store.commit('setDPage', content.page)
         this.$store.commit('setDWidgets', content.widgets)
         await this.$nextTick()
+
         const imgsData: any = []
         const fontLoaders: any = []
         const fontContent: any = {}
@@ -73,6 +77,7 @@ export default defineComponent({
             }
           }
         })
+
         try {
           await this.font2style(fontContent, fontData)
           console.log('base64字体加载完毕')
@@ -122,6 +127,13 @@ export default defineComponent({
           resolve()
         })
       })
+    },
+    compressImages(widgets: any) {
+      for (const item of widgets) {
+        if (item.imgUrl) {
+          item.imgUrl += '@small'
+        }
+      }
     },
   },
 })

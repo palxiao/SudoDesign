@@ -3,7 +3,7 @@
  * @Date: 2021-08-27 15:16:07
  * @Description: 模板列表
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-25 00:02:23
+ * @LastEditTime: 2022-03-01 15:33:13
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -59,6 +59,7 @@ export default defineComponent({
 
     const load = async (init: boolean = false, stat: string) => {
       stat && (pageOptions.state = stat)
+
       if (init) {
         state.list = []
         pageOptions.page = 0
@@ -77,13 +78,14 @@ export default defineComponent({
 
       setTimeout(() => {
         state.loading = false
-      }, 300)
+      }, 100)
     }
 
     function cateChange(type: any) {
       state.title = type.name
+      const init = pageOptions.cate != type.id
       pageOptions.cate = type.id
-      load(true, pageOptions.stat)
+      load(init, pageOptions.stat)
     }
 
     return {
@@ -101,6 +103,9 @@ export default defineComponent({
       this.$store.commit('managerEdit', false)
       this.$store.commit('setShowMoveable', false) // 清理掉上一次的选择框
       this.$store.commit('setDWidgets', [])
+
+      this.setTempId(item.id)
+
       let result = null
       if (!item.data) {
         const res = await api.home.getTempDetail({ id: item.id })
@@ -118,30 +123,34 @@ export default defineComponent({
         uuid: '-1',
       })
     },
-    action({ name, value }: any, item: any, index: number) {
-      switch (name) {
-        case 'edit':
-          this.editTemp(item)
-          break
-        case 'del':
-          this.delTemp(item, index)
-          break
-        case 'stat':
-          this.setTempStat(item, value)
-          break
-      }
-    },
-    editTemp(item: any) {
-      this.$router.push({ path: '/home', query: { tempid: item.id }, replace: true })
-      this.$store.commit('managerEdit', true)
-    },
-    delTemp({ id }: any, index: number) {
-      api.home.removeComp({ id })
-      this.list.splice(index, 1)
-      this.$store.commit('managerEdit', false)
-    },
-    setTempStat({ id }: any, stat: string) {
-      api.home.setTempStat({ id, stat })
+    // action({ name, value }: any, item: any, index: number) {
+    //   switch (name) {
+    //     case 'edit':
+    //       this.editTemp(item)
+    //       break
+    //     case 'del':
+    //       this.delTemp(item, index)
+    //       break
+    //     case 'stat':
+    //       this.setTempStat(item, value)
+    //       break
+    //   }
+    // },
+    // editTemp(item: any) {
+    // this.$router.push({ path: '/home', query: { tempid: item.id }, replace: true })
+    // this.$store.commit('managerEdit', true)
+    // },
+    // delTemp({ id }: any, index: number) {
+    //   api.home.removeComp({ id })
+    //   this.list.splice(index, 1)
+    //   this.$store.commit('managerEdit', false)
+    // },
+    // setTempStat({ id }: any, stat: string) {
+    //   api.home.setTempStat({ id, stat })
+    // },
+    setTempId(tempId: number | string) {
+      const { id } = this.$route.query
+      this.$router.push({ path: '/home', query: { tempid: tempId, id }, replace: true })
     },
   },
 })

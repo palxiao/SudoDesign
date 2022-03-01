@@ -3,7 +3,7 @@
  * @Date: 2022-02-23 15:48:52
  * @Description: 图片列表组件 Bookshelf Layout 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 15:00:23
+ * @LastEditTime: 2022-03-01 15:42:49
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -12,11 +12,11 @@
       <div v-for="(item, i) in list" :key="i + 'i'" :style="{ width: item.listWidth + 'px' }" class="list__img" draggable="true" @click.stop="select(i)" @dragstart="dragStart($event, i)">
         <edit-model v-if="edit" :options="edit" :data="{ item, i }">
           <div v-if="item.isDelect" style="background: rgba(0, 0, 0, 0.7); opacity: 1" class="list__img-mask">已删除</div>
-          <img class="img" :src="item.thumb || item.url" />
+          <img class="img" :src="item.thumb || item.cover || item.url" />
         </edit-model>
         <template v-else>
           <div class="list__img-mask"></div>
-          <img class="img" :src="item.thumb || item.url" />
+          <img class="img" :src="item.thumb || item.cover || item.url" />
         </template>
         <!-- <el-image :src="item.thumb || item.url" fit="cover"></el-image> -->
       </div>
@@ -53,7 +53,7 @@ export default defineComponent({
         list = JSON.parse(JSON.stringify(list))
         const limitWidth = 260 // 256
         const marginRight = 6 // 间距
-        const standardHeight = 130 // 高度阈值
+        const standardHeight = 140 // 高度阈值
         const neatArr: any = [] // 整理后的数组
         function factory(cutArr: any) {
           return new Promise((resolve) => {
@@ -129,7 +129,7 @@ export default defineComponent({
   height: 100%;
   margin-top: 14px;
   overflow-y: scroll;
-  padding-bottom: 150px;
+  padding-bottom: 300px;
 }
 .img {
   width: 100%;

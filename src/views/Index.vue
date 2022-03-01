@@ -70,12 +70,6 @@ export default defineComponent({
       jump2home,
     }
   },
-  watch: {
-    $route() {
-      console.log('change route', this.$route.query)
-      this.loadData()
-    },
-  },
   computed: {
     ...mapGetters(['dActiveElement', 'dHistoryParams', 'dCopyElement', 'dPage']),
     undoable() {
@@ -85,6 +79,12 @@ export default defineComponent({
       return !(this.dHistoryParams.index === this.dHistoryParams.length - 1)
     },
   },
+  // watch: {
+  //   $route() {
+  //     console.log('change route', this.$route.query)
+  //     this.loadData()
+  //   },
+  // },
   mounted() {
     this.initGroupJson(JSON.stringify(wGroup.setting))
     window.addEventListener('scroll', this.fixTopBarScroll)

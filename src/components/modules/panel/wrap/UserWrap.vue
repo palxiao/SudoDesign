@@ -3,21 +3,31 @@
  * @Date: 2022-02-13 22:18:35
  * @Description: 我的
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 16:31:02
+ * @LastEditTime: 2022-03-01 15:49:52
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
   <div class="wrap">
-    <uploader v-model="percent" class="upload" @done="uploadDone">
-      <el-button class="upload-btn" size="small" type="primary">上传图片 <i class="iconfont icon-upload" /></el-button>
-    </uploader>
-    <!-- <img-water-fall :edit="true" :listData="imgList" @delete-img="deleteImg" @select-img="selectImg" /> -->
-    <img-list v-if="showList" ref="imgListComp" :edit="editOptions" :isDone="isDone" :listData="imgList" @load="load" @drag="dragStart" @select="selectImg" />
+    <el-tabs v-model="tabActiveName" :stretch="true" class="tabs" @tab-click="handleClick">
+      <el-tab-pane label="我的图片" name="pics"> </el-tab-pane>
+      <el-tab-pane label="我的作品" name="design"> </el-tab-pane>
+    </el-tabs>
+    <div v-show="tabActiveName === 'pics'" class="wrap">
+      <uploader v-model="percent" class="upload" @done="uploadDone">
+        <el-button class="upload-btn" size="small" type="primary">上传图片 <i class="iconfont icon-upload" /></el-button>
+      </uploader>
+      <img-list v-if="showList" ref="imgListComp" :edit="editOptions" :isDone="isDone" :listData="imgList" @load="load" @drag="dragStart" @select="selectImg" />
+    </div>
+    <div v-show="tabActiveName === 'design'" class="wrap">
+      <img-list v-if="showList" :isDone="isDone" :listData="designList" @load="loadDesign" @select="selectDesign" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from 'vue'
+import { defineComponent, reactive, toRefs, watch, nextTick } from 'vue'
+import { ElTabPane, ElTabs } from 'element-plus'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import uploader from '@/components/common/Uploader'
 import api from '@/api'
@@ -25,21 +35,25 @@ import wImage from '../../widgets/wImage/wImage.vue'
 import setImageData from '@/common/methods/DesignFeatures/setImage'
 
 export default defineComponent({
-  components: { uploader },
+  components: { uploader, ElTabPane, ElTabs },
   props: ['active'],
   setup(props) {
+    const router = useRouter()
     const store = useStore()
     const state: any = reactive({
       prePath: 'user',
       percent: { num: 0 }, // 当前上传进度
       imgList: [],
+      designList: [],
       showList: false,
       isDone: false,
       editOptions: [],
       imgListComp: null,
+      tabActiveName: '',
     })
     let loading = false
     let page = 0
+    let listPage = 0
 
     const load = (init: boolean) => {
       if (init) {
@@ -59,6 +73,31 @@ export default defineComponent({
         }, 100)
       })
     }
+    const loadDesign = (init: boolean = false) => {
+      if (init) {
+        state.designList = []
+        listPage = 0
+        state.isDone = false
+      }
+      if (state.isDone || loading) {
+        return
+      }
+      loading = true
+      listPage += 1
+      api.home.getMyDesign({ page: listPage, pageSize: 10 }).then(({ list }: any) => {
+        list.length <= 0
+          ? (state.isDone = true)
+          : (state.designList = state.designList.concat(
+              list.map((x: any) => {
+                x.cover = x.cover + '?r=' + Math.random()
+                return x
+              }),
+            ))
+        setTimeout(() => {
+          loading = false
+        }, 100)
+      })
+    }
 
     watch(
       () => props.active,
@@ -66,6 +105,9 @@ export default defineComponent({
         if (props.active) {
           state.showList = true
           load(true)
+          nextTick(() => {
+            state.tabActiveName = 'pics'
+          })
         }
       },
     )
@@ -105,8 +147,22 @@ export default defineComponent({
       load(true)
     }
 
+    const handleClick = () => {
+      if (state.tabActiveName === 'design') {
+        loadDesign(true)
+      }
+    }
+
+    const selectDesign = async (index: number) => {
+      const { id }: any = state.designList[index]
+      window.open(`http://sudo.palxp.com/home?id=${id}`)
+    }
+
     return {
       ...toRefs(state),
+      selectDesign,
+      loadDesign,
+      handleClick,
       load,
       uploadDone,
       selectImg,
@@ -118,11 +174,15 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+.tabs {
+  padding: 0.2rem 0;
+}
 .upload {
   width: auto;
-  margin: 1rem 0 0 1rem;
+  margin: 0 0 0 1rem;
   display: inline-block;
   &-btn {
+    width: 258px;
     font-size: 14px;
   }
 }
