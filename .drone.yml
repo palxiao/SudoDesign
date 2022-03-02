@@ -23,7 +23,7 @@ steps:
       - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       - git clone -b $publish_branch --depth=1 $DRONE_GIT_SSH_URL
       - cd $repository_name
-      - mv -f ./* /drone/src
+      - mv -f ./* /drone-home/src
 
   - name: docker-move
     image: alpine
@@ -89,7 +89,7 @@ volumes:
 
   - name: web_home
     host:
-      path: /data/docker_home
+      path: /data/docker-home
 
   - name: sshkeys
     host:
