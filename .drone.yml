@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: 部署web设计器
+name: web海报设计 - 自动部署
 
 clone:
   disable: true
