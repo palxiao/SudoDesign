@@ -1,0 +1,96 @@
+kind: pipeline
+type: docker
+name: 部署web设计器
+
+clone:
+  disable: true
+
+steps:
+  - name: docker-clone
+    pull: if-not-exists
+    image: alpine/git
+    environment:
+      warehouse_name: Design
+      repository_name: SudoDesign
+      publish_branch: publish
+    volumes:
+      - name: sshkeys
+        path: /root/.ssh
+    commands:
+      - echo $publish_branch
+      - echo $DRONE_GIT_SSH_URL
+      - chmod -R 600 /root/.ssh/
+      - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+      - git clone -b $publish_branch --depth=1 $DRONE_GIT_SSH_URL
+      - cd $repository_name
+      - mv -f ./* /drone-home/src
+
+  - name: docker-move
+    image: alpine
+    environment:
+      warehouse_name: Design
+      target: web
+    volumes:
+      - name: cache
+        path: /cache
+      - name: web_home
+        path: /home
+    commands:
+      - mv -f ./dist.zip /cache
+      - cd /cache
+      - unzip dist.zip
+      - cd dist
+      # -- Web --
+      - if [ ! -d "/home/$target/$warehouse_name/" ]; then
+      - mkdir -p /home/$target/$warehouse_name
+      - fi
+      - rm -rf /home/$target/$warehouse_name/*
+      - mv -f ./* /home/$target/$warehouse_name
+      # -- Node --
+      # - if [ ! -d "/home/$target/" ]; then
+      # - mkdir -p /home/$target
+      # - fi
+      # - mv -f ./server.js /home/$target/$warehouse_name.js
+      # -- End --
+      - rm -rf ../*
+
+  - name: docker-deploy
+    pull: if-not-exists
+    image: appleboy/drone-ssh
+    volumes:
+      - name: sshkeys
+        path: /root/.ssh
+    settings:
+      host:
+        from_secret: IP
+      password:
+        from_secret: SSH_PASSWORD
+      username:
+        from_secret: USER
+      port:
+        from_secret: PORT
+      script:
+        - echo hello linux.
+        - docker exec stack /bin/bash -c 'pm2 delete Design'
+        - docker exec stack /bin/bash -c 'pm2 serve --spa /home/web/Design 8007 --name Design'
+        # - docker exec stack /bin/bash -c 'pm2 start /home/service/FrogPunch-BackEnd.js'
+        - docker exec stack /bin/bash -c 'pm2 flush'
+
+trigger:
+  branch:
+    - publish
+  event:
+    - push
+
+volumes:
+  - name: cache
+    host:
+      path: /data/cache
+
+  - name: web_home
+    host:
+      path: /data/docker-home
+
+  - name: sshkeys
+    host:
+      path: /root/.ssh
