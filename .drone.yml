@@ -71,10 +71,10 @@ steps:
         from_secret: PORT
       script:
         - echo hello linux.
-        - docker exec stack /bin/bash -c 'pm2 delete Design'
-        - docker exec stack /bin/bash -c 'pm2 serve --spa /home/web/Design 8007 --name Design'
-        # - docker exec stack /bin/bash -c 'pm2 start /home/service/FrogPunch-BackEnd.js'
-        - docker exec stack /bin/bash -c 'pm2 flush'
+        - docker exec program /bin/bash -c 'pm2 delete Design'
+        - docker exec program /bin/bash -c 'pm2 serve --spa /home/web/Design 8007 --name Design'
+        # - docker exec program /bin/bash -c 'pm2 start /home/service/FrogPunch-BackEnd.js'
+        - docker exec program /bin/bash -c 'pm2 flush'
 
 trigger:
   branch:
