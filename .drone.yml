@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: web海报设计 - 自动部署
+name: web海报设计 - 8007 - sudo.palxp.com
 
 clone:
   disable: true
