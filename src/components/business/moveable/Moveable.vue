@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-20 15:16:52
+ * @LastEditTime: 2022-03-03 16:54:49
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -423,9 +423,9 @@ export default defineComponent({
   async created() {
     await nextTick()
     const Ele = document.getElementById('page-design')
-    // 后续加个节流 TODO：moveable好像支持滚动，待研究
+    // 后续可能加个节流 TODO
     Ele?.addEventListener('scroll', () => {
-      this.moveable.target = `[id="empty"]`
+      this.moveable.updateRect()
     })
   },
   methods: {
