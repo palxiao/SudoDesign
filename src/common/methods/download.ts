@@ -3,7 +3,7 @@
  * @Date: 2021-09-30 15:52:59
  * @Description: 下载图片
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-01-20 11:26:39
+ * @LastEditTime: 2022-03-03 13:50:21
  * @site: book.palxp.com / blog.palxp.com
  */
 
@@ -32,8 +32,8 @@ export default function download(src: string, cb: Function) {
     //   resolve()
     // }
 
-    fetchImageDataFromUrl(src, (progress: any) => {
-      cb(progress)
+    fetchImageDataFromUrl(src, (progress: number, xhr: XMLHttpRequest) => {
+      cb(progress, xhr)
     }).then((res: any) => {
       const reader = new FileReader()
       reader.onload = function(event) {
@@ -67,7 +67,7 @@ function fetchImageDataFromUrl(url: string, cb: Function) {
       totalLength = Number(xhr.getResponseHeader('content-length')) // 'cache-control'
     }
     xhr.onprogress = function(event) {
-      cb((event.loaded / totalLength) * 100)
+      cb((event.loaded / totalLength) * 100, xhr)
     }
     xhr.onload = function() {
       if (xhr.status < 400) resolve(this.response)

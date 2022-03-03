@@ -10,7 +10,7 @@
             <div :class="['operation-item', { disable: !redoable }]" @click="redoable ? handleHistory('redo') : ''"><i class="iconfont icon-redo" /></div>
           </div>
         </div>
-        <HeaderOptions ref="options" @change="optionsChange" />
+        <HeaderOptions ref="options" v-model="isContinue" @change="optionsChange" />
       </div>
     </div>
 
@@ -26,7 +26,7 @@
     <!-- 旋转缩放组件 -->
     <Moveable />
     <!-- 遮罩百分比进度条 -->
-    <ProgressLoading :percent="downloadPercent" :text="downloadText" @done="downloadPercent = 0" />
+    <ProgressLoading :percent="downloadPercent" :text="downloadText" @cancel="downloadCancel" @done="downloadPercent = 0" />
   </div>
 </template>
 
@@ -57,6 +57,7 @@ export default defineComponent({
       // openDraw: false,
       downloadPercent: 0, // 下载进度
       downloadText: '',
+      isContinue: true,
     })
     // const draw = () => {
     //   state.openDraw = true
@@ -102,6 +103,10 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(['selectWidget', 'initGroupJson', 'handleHistory']),
+    downloadCancel() {
+      this.downloadPercent = 0
+      this.isContinue = false
+    },
     loadData() {
       const { id, tempid } = this.$route.query
       ;(this.$refs as any).options.load(id, tempid, async () => {

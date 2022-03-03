@@ -3,13 +3,16 @@
  * @Date: 2021-12-28 09:29:42
  * @Description: 百分比进度条
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-01-12 14:07:41
+ * @LastEditTime: 2022-03-03 14:02:44
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
   <div v-if="percent" class="mask">
-    <el-progress style="width: 100%" :text-inside="true" :stroke-width="20" :percentage="percent" />
-    <div class="text">{{ text }} ..</div>
+    <div class="content">
+      <div class="text">{{ text }} ..</div>
+      <el-progress style="width: 100%" :text-inside="true" :percentage="percent" />
+      <div class="text btn" @click="cancel">取消</div>
+    </div>
   </div>
 </template>
 
@@ -20,29 +23,38 @@ import { ElProgress } from 'element-plus'
 export default defineComponent({
   components: { ElProgress },
   props: ['percent', 'text'],
-  emits: ['done'],
-  setup(props, centext) {
+  emits: ['done', 'cancel'],
+  setup(props, context) {
     watch(
       () => props.percent,
       (num) => {
         if (num >= 100) {
           setTimeout(() => {
-            centext.emit('done')
+            context.emit('done')
           }, 1000)
         }
       },
     )
+
+    const cancel = () => {
+      context.emit('cancel')
+    }
+
+    return { cancel }
   },
 })
 </script>
 
 
 <style lang="less" scoped>
+:deep(.el-progress-bar__innerText) {
+  opacity: 0;
+}
 .mask {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 0 20%;
+  padding: 0 24%;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -51,10 +63,23 @@ export default defineComponent({
   left: 0;
   background: rgba(0, 0, 0, 0.7);
 }
+.content {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem 4rem;
+}
 .text {
-  margin-top: 2rem;
+  margin: 2rem 0;
+  font-size: 20px;
+  font-weight: bold;
   width: 100%;
   text-align: center;
-  color: #ffffff;
+  color: #333333;
+}
+.btn {
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+  color: #3771e5;
 }
 </style>

@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 10:35:27
+ * @LastEditTime: 2022-03-03 14:07:10
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -22,7 +22,7 @@
     <el-button class="primary-btn" :disabled="tempEditing" type="primary" @click="download">下载作品</el-button>
   </div>
   <!-- 生成图片弹窗组件 -->
-  <SaveImage ref="canvasImage" />
+  <!-- <SaveImage ref="canvasImage" /> -->
 </template>
 
 <script lang="ts">
@@ -32,12 +32,13 @@ import { mapGetters, useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import downloadImg from '@/common/methods/download'
 import useNotification from '@/common/methods/notification'
-import SaveImage from '@/components/business/save-download/SaveImage.vue'
+// import SaveImage from '@/components/business/save-download/SaveImage.vue'
 import { useFontStore } from '@/common/methods/fonts'
 
 export default defineComponent({
-  components: { SaveImage },
-  emits: ['change'],
+  components: {},
+  props: ['modelValue'],
+  emits: ['change', 'update:modelValue'],
   setup(props, context) {
     const { proxy }: any = getCurrentInstance() as ComponentInternalInstance
     const route = useRoute()
@@ -75,9 +76,14 @@ export default defineComponent({
         const { id } = route.query
         if (id) {
           const { width, height } = proxy.dPage
-          context.emit('change', { downloadPercent: 1, downloadText: '请稍候' })
-          await downloadImg(api.home.download({ id, width, height }) + '&r=' + Math.random(), (p: any) => {
-            context.emit('change', { downloadPercent: Number(p.toFixed(0)), downloadText: '图片生成中' })
+          context.emit('update:modelValue', true)
+          context.emit('change', { downloadPercent: 1, downloadText: '准备合成图片' })
+          await downloadImg(api.home.download({ id, width, height }) + '&r=' + Math.random(), (progress: number, xhr: any) => {
+            if (props.modelValue) {
+              context.emit('change', { downloadPercent: Number(progress.toFixed(0)), downloadText: '图片生成中' })
+            } else {
+              xhr.abort()
+            }
           })
           context.emit('change', { downloadPercent: 0, downloadText: '' })
         }
@@ -122,13 +128,13 @@ export default defineComponent({
         cb()
       }
     },
-    draw() {
-      return new Promise((resolve) => {
-        this.$refs.canvasImage.createImg((url) => {
-          resolve(url)
-        })
-      })
-    },
+    // draw() {
+    //   // return new Promise((resolve) => {
+    //   //   this.$refs.canvasImage.createImg((url) => {
+    //   //     resolve(url)
+    //   //   })
+    //   // })
+    // },
   },
 })
 </script>
