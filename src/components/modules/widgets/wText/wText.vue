@@ -29,7 +29,7 @@
       <component :is="params.isEffect" :params="params" />
     </template>
     <!-- plaintext-only -->
-    <div v-else ref="editWrap" :style="{ fontFamily: `'${params.fontClass.value}'` }" class="edit-text" spellcheck="false" :contenteditable="editable ? true : false" @input="writingText($event)" @blur="writeDone($event)" v-html="params.text"></div>
+    <div v-else ref="editWrap" :style="{ fontFamily: `'${params.fontClass.value}'` }" class="edit-text" spellcheck="false" :contenteditable="editable ? 'plaintext-only' : false" @input="writingText($event)" @blur="writeDone($event)" v-html="params.text"></div>
   </div>
 </template>
 

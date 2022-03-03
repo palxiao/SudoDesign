@@ -9,6 +9,7 @@
       }"
     >
       <slot />
+
       <div
         :id="pageDesignCanvasId"
         class="design-canvas"

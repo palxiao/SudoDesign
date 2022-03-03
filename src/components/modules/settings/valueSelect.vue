@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 19:10:06
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-01 10:48:43
+ * @LastEditTime: 2022-03-03 14:50:41
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -46,7 +46,7 @@
       <template #reference>
         <div :class="['input-wrap', { active: inputBorder }]" :style="{ width: inputWidth }">
           <img v-if="innerPreview" class="preview" :src="innerPreview" />
-          <input v-else :style="{ textAlign: textAlign }" :class="['real-input', { disable: !disable }]" :readonly="readonly ? 'readonly' : false" type="text" :value="showValue" @input="inputText" @focus="inputBorder = true" @blur="inputBorder = false" />
+          <input v-else :style="{ textAlign: textAlign }" :class="['real-input', { disable: !disable }]" :readonly="readonly ? 'readonly' : false" type="text" :value="showValue" @input="inputText" @focus="inputBorder = true" @blur="inputBorder = false" @keydown="(e) => opNumber(e)" />
           <!-- <span class="input-unit">{{ suffix }}</span> -->
           <div class="op-btn">
             <!-- <div class="down" @click="inputBorder = !inputBorder"></div> -->
@@ -90,6 +90,9 @@ export default {
     },
     readonly: {
       default: false,
+    },
+    step: {
+      default: 1,
     },
   },
   data() {
@@ -149,6 +152,27 @@ export default {
       setTimeout(() => {
         this.$emit('finish', this.innerValue)
       }, 100)
+    },
+    opNumber(e) {
+      e.stopPropagation()
+      switch (e.keyCode) {
+        case 38:
+          typeof this.innerValue === 'number' && this.up()
+          return
+        case 40:
+          typeof this.innerValue === 'number' && this.down()
+          return
+      }
+    },
+    up() {
+      this.$emit('finish', parseInt(this.modelValue || 0, 10) + this.step)
+    },
+    down() {
+      let value = parseInt(this.modelValue || 0, 10) - this.step
+      if (value < 0) {
+        value = 0
+      }
+      this.$emit('finish', value)
     },
   },
 }
