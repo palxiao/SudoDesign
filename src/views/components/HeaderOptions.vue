@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 14:07:10
+ * @LastEditTime: 2022-03-03 16:57:58
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -55,7 +55,7 @@ export default defineComponent({
       const { id, tempid } = route.query
       // const cover = simple ? undefined : await proxy?.draw()
       const { id: newId, stat, msg } = await api.home.saveWorks({ simple, id, title: proxy.title || '未命名设计', data: JSON.stringify({ page: proxy.dPage, widgets: proxy.dWidgets }), temp_id: tempid, width: proxy.dPage.width, height: proxy.dPage.height })
-      stat != 0 ? useNotification('保存成功', '可在"我的设计"中查看') : useNotification('保存失败', msg, 'error')
+      stat != 0 ? useNotification('保存成功', '可在"我的作品"中查看') : useNotification('保存失败', msg, 'error')
       !id && router.push({ path: '/home', query: { id: newId }, replace: true })
     }
     // 保存模板

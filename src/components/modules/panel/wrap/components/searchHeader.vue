@@ -3,7 +3,7 @@
  * @Date: 2022-01-27 11:05:48
  * @Description:  
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-25 00:24:48
+ * @LastEditTime: 2022-03-03 17:48:37
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -42,7 +42,7 @@ export default defineComponent({
     const state: any = reactive({
       searchValue: '',
       materialCates: [],
-      currentIndex: 2,
+      currentIndex: 1,
     })
 
     if (props.type != 'none') {

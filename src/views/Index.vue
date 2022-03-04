@@ -3,7 +3,6 @@
     <div :style="style" class="top-nav">
       <div class="top-nav-wrap">
         <div class="top-left">
-          <!-- <div class="name" @click="jump2home">SUDO DESIGN</div> -->
           <div style="font-size: 14px" class="name" @click="jump2home">SODU DESIGN</div>
           <div class="operation">
             <div :class="['operation-item', { disable: !undoable }]" @click="undoable ? handleHistory('undo') : ''"><i class="iconfont icon-undo" /></div>

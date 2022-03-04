@@ -9,7 +9,6 @@
       }"
     >
       <slot />
-
       <div
         :id="pageDesignCanvasId"
         class="design-canvas"
@@ -233,6 +232,8 @@ export default defineComponent({
 <style lang="less" scoped>
 #page-design {
   height: 100%;
+  display: flex;
+  align-items: center;
   overflow: auto;
   position: relative;
   width: 100%;
@@ -250,6 +251,9 @@ export default defineComponent({
       position: relative;
       overflow: hidden;
     }
+    // .design-canvas ::-webkit-scrollbar {
+    //   display: none; /* Chrome Safari */
+    // }
   }
 }
 </style>

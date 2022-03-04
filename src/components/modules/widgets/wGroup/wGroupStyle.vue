@@ -3,18 +3,18 @@
  * @Date: 2021-08-09 11:21:37
  * @Description: 组合设置
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-01-21 16:38:00
+ * @LastEditTime: 2022-03-04 10:03:42
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
   <div id="w-group-style">
     <el-collapse v-model="activeNames">
       <el-collapse-item title="位置尺寸" name="1">
-        <div class="position-size">
+        <div class="line-layout">
           <number-input v-model="innerElement.left" label="X" @finish="(value) => finish('left', value)" />
           <number-input v-model="innerElement.top" label="Y" @finish="(value) => finish('top', value)" />
-          <!-- <number-input v-model="defaultValue" style="margin-top: 0.5rem" label="宽" :editable="false" />
-          <number-input v-model="defaultValue" style="margin-top: 0.5rem" label="高" :editable="false" /> -->
+          <number-input v-model="innerElement.width" style="margin-top: 0.5rem" label="宽" @finish="(value) => finish('width', value)" />
+          <number-input v-model="innerElement.height" style="margin-top: 0.5rem" label="高" @finish="(value) => finish('height', value)" />
         </div>
       </el-collapse-item>
       <el-collapse-item title="样式设置" name="2">
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       activeNames: ['1', '2', '3', '4'],
-      defaultValue: 0,
+      // defaultValue: 0,
       innerElement: {},
       tag: false,
       ingoreKeys: ['name', 'width', 'height'],
@@ -177,8 +177,15 @@ export default {
   height: 100%;
   width: 100%;
 }
-.position-size {
+// .position-size {
+//   display: flex;
+//   justify-content: space-between;
+//   width: 100%;
+// }
+.line-layout {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
 }

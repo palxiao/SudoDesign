@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 09:41:41
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-28 15:07:19
+ * @LastEditTime: 2022-03-04 14:01:42
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -56,11 +56,20 @@ export default {
   props: ['params', 'parent'],
   data() {
     return {
-      // timer: null,
+      timer: null,
     }
   },
   computed: {
     ...mapGetters(['dActiveElement', 'dWidgets']),
+  },
+  watch: {
+    params: {
+      async handler(nval) {
+        this.updateRecord(nval.tempScale)
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   updated() {
     this.updateRecord()
@@ -79,7 +88,7 @@ export default {
   },
   methods: {
     ...mapActions(['updateWidgetData']),
-    updateRecord() {
+    updateRecord(tempScale) {
       if (this.dActiveElement.uuid === this.params.uuid) {
         // clearTimeout(this.timer)
         let record = this.dActiveElement.record
@@ -89,7 +98,7 @@ export default {
         // if (this.tempRecord && this.tempRecord.width && this.tempRecord.width != record.width) {
         //   return
         // }
-        this.ratio = this.params.width / record.width
+        this.ratio = tempScale || this.params.width / record.width
 
         this.temp = {}
         if (record.width != 0) {
@@ -101,7 +110,7 @@ export default {
         }
         // TODO DOM Change
         // console.log(this.ratio)
-        this.dActiveElement.scale = this.ratio
+        // this.dActiveElement.scale = this.ratio
         setTransformAttribute(this.$refs.widget, 'scale', this.ratio)
         // this.timer = setTimeout(() => {
         //   this.touchend()
@@ -130,6 +139,9 @@ export default {
       // const opacity = this.$refs.widget.style.opacity
       // this.$refs.widget.style.opacity = 0
       setTimeout(() => {
+        if (!this.temp) {
+          return
+        }
         // const opacity = this.$refs.widget.style.opacity
         // this.$refs.widget.style.opacity = 0
         setTransformAttribute(this.$refs.widget, 'scale', 1)
@@ -156,8 +168,10 @@ export default {
           let record = this.dActiveElement.record
           record.width = this.$refs.widget?.offsetWidth
           record.height = this.$refs.widget?.offsetHeight
+          this.dActiveElement.width = this.$refs.widget?.offsetWidth
+          this.dActiveElement.height = this.$refs.widget?.offsetHeight
         }
-      }, 100)
+      }, 10)
     },
     keyChange(uuid, key, value) {
       this.updateWidgetData({

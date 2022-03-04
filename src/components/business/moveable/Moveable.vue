@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 16:54:49
+ * @LastEditTime: 2022-03-04 14:03:15
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -322,20 +322,48 @@ export default defineComponent({
         } else if (this.dActiveElement.type == 'w-image') {
           this.resizeTempData = { width, height }
         } else if (this.dActiveElement.type == 'w-group') {
-          this.$store.commit('resize', { width: width, height: height })
+          let record = this.dActiveElement.record
+          this.dActiveElement.tempScale = width / record.width
+          // this.$store.commit('resize', { width: width, height: height })
           // this.resizeTempData = { width, height }
           // let record = this.dActiveElement.record
           // setTransformAttribute(target, 'scale', width / record.width)
         } else {
           this.$store.commit('resize', { width: width, height: height })
         }
-
         this.dActiveElement.rotate && (target!.style.transform = target!.style.transform.replace('0deg', this.dActiveElement.rotate))
       })
       .on('resizeEnd', (e: any) => {
+        if (e.lastEvent) {
+          setTimeout(() => {
+            // 重置translate
+            const tf = e.target.style.transform
+            const iof = tf.indexOf('translate')
+            const FRONT = tf.slice(0, iof + 'translate'.length + 1)
+            const half = tf.substring(iof + 'translate'.length + 1)
+            const END = half.substring(half.indexOf(')'))
+            e.target.style.transform = FRONT + '0, 0' + END
+            // 转换成位置
+            const left = e.lastEvent.drag.translate[0]
+            const top = e.lastEvent.drag.translate[1]
+            this.updateWidgetData({
+              uuid: this.dActiveElement.uuid,
+              key: 'left',
+              value: Number(this.dActiveElement.left) + left,
+            })
+            this.updateWidgetData({
+              uuid: this.dActiveElement.uuid,
+              key: 'top',
+              value: Number(this.dActiveElement.top) + top,
+            })
+            this.moveable.updateRect()
+          }, 10)
+        }
+
         if (this.resizeTempData) {
           this.$store.commit('resize', this.resizeTempData)
           this.resizeTempData = null
+          this.moveable.updateRect()
         }
         if (this.dActiveElement.type === 'w-text') {
           const d = e.direction || e.lastEvent.direction
@@ -343,46 +371,54 @@ export default defineComponent({
         }
         moveable.keepRatio = true
 
-        if (!e.lastEvent) {
-          return
-        }
-        // 转换成位置
-        const left = e.lastEvent.drag.translate[0]
-        const top = e.lastEvent.drag.translate[1]
-        this.updateWidgetData({
-          uuid: this.dActiveElement.uuid,
-          key: 'left',
-          value: Number(this.dActiveElement.left) + left,
-        })
-        this.updateWidgetData({
-          uuid: this.dActiveElement.uuid,
-          key: 'top',
-          value: Number(this.dActiveElement.top) + top,
-        })
-        // // 重置translate
-        const tf = e.target.style.transform
-        const iof = tf.indexOf('translate')
-        const FRONT = tf.slice(0, iof + 'translate'.length + 1)
-        const half = tf.substring(iof + 'translate'.length + 1)
-        const END = half.substring(half.indexOf(')'))
-        e.target.style.transform = FRONT + '0, 0' + END
         // 强制失焦再聚焦
         // this.$store.commit('setShowMoveable', false)
-        this.moveable.target = `[id="empty"]`
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.moveable.target = this._target
-            // this.$store.commit('setShowMoveable', true)
-          }, 10)
-        })
+        // this.moveable.target = `[id="empty"]`
+        // this.$nextTick(() => {
+        //   setTimeout(() => {
+        //     this.moveable.target = this._target
+        //     // this.$store.commit('setShowMoveable', true)
+        //   }, 10)
+        // })
       })
-      .on('clip', (e: any) => {
-        if (e.clipType === 'rect') {
-          e.target.style.clip = e.clipStyle
-        } else {
-          e.target.style.clipPath = e.clipStyle
-        }
+      .on('resizeGroupStart', ({ events }: any) => {
+        console.log(events)
+        // events.forEach((ev, i) => {
+        //     const frame = this.frames[i];
+        //     // Set origin if transform-origin use %.
+        //     ev.setOrigin(["%", "%"]);
+
+        //     // If cssSize and offsetSize are different, set cssSize.
+        //     const style = window.getComputedStyle(ev.target);
+        //     const cssWidth = parseFloat(style.width);
+        //     const cssHeight = parseFloat(style.height);
+        //     ev.set([cssWidth, cssHeight]);
+
+        //     // If a drag event has already occurred, there is no dragStart.
+        //     ev.dragStart && ev.dragStart.set(frame.translate);
+        // });
       })
+      .on('resizeGroup', (e: any) => {
+        // events.forEach(({ target, width, height, drag }, i) => {
+        //     const frame = this.frames[i];
+        //     target.style.width = `${width}px`;
+        //     target.style.height = `${height}px`;
+        //     // get drag event
+        //     frame.translate = drag.beforeTranslate;
+        //     target.style.transform
+        //         = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
+        // });
+      })
+      .on('resizeGroupEnd', ({ targets, isDrag }: any) => {
+        console.log('onResizeGroupEnd', targets, isDrag)
+      })
+    // .on('clip', (e: any) => {
+    //   if (e.clipType === 'rect') {
+    //     e.target.style.clip = e.clipStyle
+    //   } else {
+    //     e.target.style.clipPath = e.clipStyle
+    //   }
+    // })
 
     // -- 选择功能 Start --
     const selecto = new Selecto({
@@ -414,7 +450,7 @@ export default defineComponent({
           uuid: el.getAttribute('data-uuid'),
         })
       })
-      this.moveable.renderDirections = []
+      this.moveable.renderDirections = [] // ['nw', 'ne', 'sw', 'se'] // []
       this.moveable.rotatable = false
       this.moveable.target = [].slice.call(document.querySelectorAll('.widget-selected'))
     })
