@@ -232,8 +232,8 @@ export default defineComponent({
 <style lang="less" scoped>
 #page-design {
   height: 100%;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
   overflow: auto;
   position: relative;
   width: 100%;

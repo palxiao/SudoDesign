@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid/non-secure'
 const nanoid = customAlphabet('1234567890abcdef', 12)
+import pushHistory from './methods/pushHistory'
 
 export default {
   /**
@@ -7,43 +8,8 @@ export default {
    * 修改数据、移动完成后都会自动保存
    * 同时会保存当前激活的组件的uuid，方便撤回时自动激活
    */
-  pushHistory(store) {
-    // 历史记录列表
-    const history = store.state.dHistory
-    // 历史激活组件记录列表
-    const uuidHistory = store.state.dActiveUuidHistory
-    // 历史page记录列表
-    const pageHistory = store.state.dPageHistory
-    // 历史记录列表参数（长度和下标）
-    const historyParams = store.state.dHistoryParams
-    // 下标不等于-1表示已经存在历史操作记录
-    // 下标小于历史列表长度-1，则说明不是在末尾添加记录，需要先删除掉下标之后的数据，否则会出现错乱
-    if (historyParams.index < history.length - 1) {
-      const index = historyParams.index + 1
-      const len = history.length - index
-      // 删除下标之后的所有历史记录
-      history.splice(index, len)
-      // 删除下标之后的所有uuid记录
-      uuidHistory.splice(index, len)
-      // 删除下标之后的所有page记录
-      pageHistory.splice(index + 1, len - 1)
-      historyParams.length = history.length
-    }
-    // 保存当前操作进历史记录
-    history.push(JSON.stringify(store.state.dWidgets))
-    uuidHistory.push(store.state.dActiveElement.uuid)
-    pageHistory.push(JSON.stringify(store.state.dPage))
-    // 历史记录最多10条，如果超过则从头部开始删，因为每次都是一条一条加的，所以只需删一条就行
-    if (history.length > 10) {
-      history.splice(0, 1)
-      uuidHistory.splice(0, 1)
-      pageHistory.splice(0, 1)
-    }
-    if (pageHistory.length - 1 > history.length) {
-      pageHistory.splice(0, 1)
-    }
-    historyParams.index = history.length - 1
-    historyParams.length = history.length
+  pushHistory(store: any) {
+    pushHistory(store)
   },
   /**
    * 操作历史记录
@@ -91,11 +57,11 @@ export default {
       }
     }
     // 激活组件默认为page
-    let element = store.state.dPage
-    if (uuid !== '-1') {
-      element = store.state.dWidgets.find((item) => item.uuid === uuid)
-    }
-    store.state.dActiveElement = element
+    // let element = store.state.dPage
+    // if (uuid !== '-1') {
+    //   element = store.state.dWidgets.find((item) => item.uuid === uuid)
+    // }
+    // store.state.dActiveElement = element
   },
   updateZoom(store, zoom) {
     store.state.dZoom = zoom
@@ -154,8 +120,10 @@ export default {
 
       widget[key] = value
 
-      store.dispatch('pushHistory')
-      store.dispatch('reChangeCanvas')
+      setTimeout(() => {
+        store.dispatch('pushHistory')
+      }, 100)
+      // store.dispatch('reChangeCanvas')
     }
   },
   addWidget(store: any, setting: any) {

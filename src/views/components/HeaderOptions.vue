@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 16:57:58
+ * @LastEditTime: 2022-03-04 20:15:41
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import api from '@/api'
 import { defineComponent, reactive, toRefs, getCurrentInstance, ComponentInternalInstance } from 'vue'
-import { mapGetters, useStore } from 'vuex'
+import { mapGetters, mapActions, useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import downloadImg from '@/common/methods/download'
 import useNotification from '@/common/methods/notification'
@@ -107,6 +107,7 @@ export default defineComponent({
   //   },
   // },
   methods: {
+    ...mapActions(['pushHistory']),
     async load(id: any, tempId: any, cb: Function) {
       if (this.$route.name !== 'Draw') {
         await useFontStore().init() // 初始化加载字体
@@ -126,6 +127,7 @@ export default defineComponent({
         this.$store.commit('setDPage', data.page)
         id ? this.$store.commit('setDWidgets', data.widgets) : this.$store.dispatch('setTemplate', data.widgets)
         cb()
+        this.pushHistory()
       }
     },
     // draw() {
