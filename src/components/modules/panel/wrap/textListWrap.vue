@@ -109,8 +109,8 @@ export default {
     padding: 10px 0;
     width: 100%;
     .basic-text-item {
-      color: #4567f4;
-      background-color: #ecf3ff;
+      color: #33383e;
+      background-color: #f1f2f4;
       cursor: grab;
       user-select: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0);

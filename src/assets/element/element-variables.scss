@@ -1,4 +1,4 @@
 /* 改变主题色变量 */
 $--color-primary: rgb(250, 131, 52); /* 改变 icon 字体路径变量，必需 */
-$--font-path: 'node_modules/element-plus/theme-chalk/fonts';
-@import 'node_modules/element-plus/packages/theme-chalk/src/index';
+$--font-path: 'node_modules/element-plus/packages/theme-chalk/src/fonts';
+@import 'node_modules/element-plus/packages/theme-chalk/src/index.scss';

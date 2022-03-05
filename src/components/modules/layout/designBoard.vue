@@ -175,6 +175,8 @@ export default defineComponent({
       })
     },
     async handleSelection(e) {
+      const bmd = new BitmapData(e.currentTarget.width, e.currentTarget.height, true, 0x00000000)
+      bmd.draw(e.currentTarget)
       if (e.which === 3) {
         return
       }
