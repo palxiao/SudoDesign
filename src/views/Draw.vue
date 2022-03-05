@@ -132,7 +132,7 @@ export default defineComponent({
     compressImages(widgets: any) {
       for (const item of widgets) {
         if (item.imgUrl && item.imgUrl.split('.')[item.imgUrl.split('.').length - 1] === 'png') {
-          item.imgUrl += '@small'
+          item.imgUrl.split('.')[1] === 'palxp' && (item.imgUrl += '@small')
         }
       }
     },
