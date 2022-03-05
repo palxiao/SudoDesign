@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-04 14:03:15
+ * @LastEditTime: 2022-03-05 15:26:49
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -322,9 +322,9 @@ export default defineComponent({
         } else if (this.dActiveElement.type == 'w-image') {
           this.resizeTempData = { width, height }
         } else if (this.dActiveElement.type == 'w-group') {
-          let record = this.dActiveElement.record
-          this.dActiveElement.tempScale = width / record.width
-          // this.$store.commit('resize', { width: width, height: height })
+          // let record = this.dActiveElement.record
+          // this.dActiveElement.tempScale = width / record.width
+          this.$store.commit('resize', { width: width, height: height })
           // this.resizeTempData = { width, height }
           // let record = this.dActiveElement.record
           // setTransformAttribute(target, 'scale', width / record.width)

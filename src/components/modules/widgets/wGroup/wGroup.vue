@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 09:41:41
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-04 14:01:42
+ * @LastEditTime: 2022-03-05 15:25:54
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -62,15 +62,15 @@ export default {
   computed: {
     ...mapGetters(['dActiveElement', 'dWidgets']),
   },
-  watch: {
-    params: {
-      async handler(nval) {
-        this.updateRecord(nval.tempScale)
-      },
-      immediate: true,
-      deep: true,
-    },
-  },
+  // watch: {
+  //   params: {
+  //     async handler(nval) {
+  //       this.updateRecord(nval.tempScale)
+  //     },
+  //     immediate: true,
+  //     deep: true,
+  //   },
+  // },
   updated() {
     this.updateRecord()
   },
@@ -144,7 +144,7 @@ export default {
         }
         // const opacity = this.$refs.widget.style.opacity
         // this.$refs.widget.style.opacity = 0
-        setTransformAttribute(this.$refs.widget, 'scale', 1)
+        // setTransformAttribute(this.$refs.widget, 'scale', 1)
         for (const key in this.temp) {
           if (Object.hasOwnProperty.call(this.temp, key)) {
             this.keyChange(key, 'width', this.temp[key].width)
