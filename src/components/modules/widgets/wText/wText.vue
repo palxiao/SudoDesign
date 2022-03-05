@@ -121,8 +121,10 @@ export default {
           }
           delete nval.fontFamily
         }
+
         if (font.url && !isDone) {
           if (font.id && this.isDraw) {
+            this.loading = false
             return
           }
           this.loading = true
@@ -149,7 +151,7 @@ export default {
   },
   async mounted() {
     this.updateRecord()
-    await this.$nextTick()
+    // await this.$nextTick()
     console.log(this.params.textEffects)
     if (this.params.textEffects && this.params.textEffects.length <= 2 && this.params.textEffects[0]) {
       const shadow = this.params.textEffects[0].shadow
@@ -164,7 +166,7 @@ export default {
       if (grad) {
         this.$refs.widget.style['-webkit-background-clip'] = 'text' // background-clip: text;
         this.$refs.widget.style['-webkit-text-fill-color'] = 'transparent' // -webkit-text-fill-color: transparent;
-        this.$refs.widget.style.backgroundImage = `linear-gradient(${grad.angle}deg, ${grad.stops[0].color} ${Number(grad.stops[0].offset) * 100}%, ${grad.stops[1].color} ${Number(grad.stops[1].offset) * 100}%)`
+        // this.$refs.widget.style.backgroundImage = `linear-gradient(${grad.angle}deg, ${grad.stops[0].color} ${Number(grad.stops[0].offset) * 100}%, ${grad.stops[1].color} ${Number(grad.stops[1].offset) * 100}%)`
       }
     }
 

@@ -38,17 +38,18 @@ export default defineComponent({
     })
   },
   methods: {
-    ...mapActions(['initGroupJson']),
+    ...mapActions(['initGroupJson', 'setTemplate']),
     async load() {
       let loadFlag = false
-      if (this.$route.query.id) {
-        const { data } = await api.home.getWorks({ id: this.$route.query.id })
+      const { id, tempid } = this.$route.query
+      if (id || tempid) {
+        const { data } = await api.home[id ? 'getWorks' : 'getTempDetail']({ id: id || tempid })
         const content = JSON.parse(data)
 
         content.page.backgroundImage && (content.page.backgroundImage += '@small')
         this.compressImages(content.widgets)
         this.$store.commit('setDPage', content.page)
-        this.$store.commit('setDWidgets', content.widgets)
+        id ? this.$store.commit('setDWidgets', content.widgets) : this.setTemplate(content.widgets)
         await this.$nextTick()
 
         const imgsData: any = []
