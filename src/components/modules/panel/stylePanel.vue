@@ -180,14 +180,15 @@ export default {
     }
     .tab.active-tab {
       // background-color: #3e4651;
-      color: #333333;
+      color: #444444;
+      font-weight: 600;
     }
   }
   .style-wrap {
     flex: 1;
     overflow: auto;
     width: 100%;
-    padding: 12px 20px;
+    padding: 0px 20px;
   }
   .layer-wrap {
     flex: 1;

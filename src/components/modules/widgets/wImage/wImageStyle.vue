@@ -3,7 +3,7 @@
  * @Date: 2021-08-09 11:41:53
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 00:51:03
+ * @LastEditTime: 2022-03-05 17:36:44
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -60,7 +60,7 @@ export default {
   components: { numberInput, numberSlider, iconItemSelect, ContainerWrap, uploader },
   data() {
     return {
-      activeNames: ['1', '2', '3', '4'],
+      activeNames: ['2', '3', '4'],
       innerElement: {},
       tag: false,
       ingoreKeys: ['left', 'top', 'name', 'width', 'height', 'radiusTopLeft', 'radiusTopRight', 'radiusBottomLeft', 'radiusBottomRight'],

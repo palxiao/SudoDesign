@@ -3,7 +3,7 @@
  * @Date: 2021-07-29 18:31:27
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-25 09:46:27
+ * @LastEditTime: 2022-03-05 17:49:09
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -81,7 +81,7 @@ export default {
       height: 32px;
       width: 32px;
       i {
-        font-size: 22px;
+        font-size: 21px;
       }
       &:hover {
         background-color: #e3e4e5;

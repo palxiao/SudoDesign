@@ -9,8 +9,23 @@ body {
   box-sizing: border-box;
   // font-size: 14px;
 }
-html ::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+// html ::-webkit-scrollbar {
+//   display: none; /* Chrome Safari */
+// }
+&::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 5px;
+  height: 5px;
+}
+&::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #ccd4de;
+  /*box-shadow: 0 0 1px hsl(0deg 0% 100% / 50%);*/
+}
+&::-webkit-scrollbar-track {
+  //background-color: #f0f1f3;
+  background-color: transparent;
+  border-radius: 3px;
 }
 
 input:-webkit-autofill,

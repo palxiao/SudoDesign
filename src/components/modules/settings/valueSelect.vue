@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 19:10:06
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 14:50:41
+ * @LastEditTime: 2022-03-05 18:03:40
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -45,8 +45,8 @@
       </el-tabs>
       <template #reference>
         <div :class="['input-wrap', { active: inputBorder }]" :style="{ width: inputWidth }">
-          <img v-if="innerPreview" class="preview" :src="innerPreview" />
-          <input v-else :style="{ textAlign: textAlign }" :class="['real-input', { disable: !disable }]" :readonly="readonly ? 'readonly' : false" type="text" :value="showValue" @input="inputText" @focus="inputBorder = true" @blur="inputBorder = false" @keydown="(e) => opNumber(e)" />
+          <!-- <img v-if="innerPreview" class="preview" :src="innerPreview" /> -->
+          <input :style="{ fontFamily: modelValue.value }" :class="['real-input', { disable: !disable }]" :readonly="readonly ? 'readonly' : false" type="text" :value="showValue" @input="inputText" @focus="inputBorder = true" @blur="inputBorder = false" @keydown="(e) => opNumber(e)" />
           <!-- <span class="input-unit">{{ suffix }}</span> -->
           <div class="op-btn">
             <!-- <div class="down" @click="inputBorder = !inputBorder"></div> -->
@@ -85,9 +85,9 @@ export default {
     inputWidth: {
       default: '80px',
     },
-    textAlign: {
-      default: 'center',
-    },
+    // textAlign: {
+    //   default: 'center',
+    // },
     readonly: {
       default: false,
     },
@@ -225,10 +225,10 @@ export default {
       background: transparent;
       border-radius: 3px;
       border: 0px;
-      font-size: 12px;
+      font-size: 13px;
       height: 40px;
       outline: none;
-      padding: 5px;
+      padding: 6px;
       text-align: center;
       width: 100%;
     }

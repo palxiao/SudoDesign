@@ -11,7 +11,7 @@
       </el-collapse-item>
       <!-- <el-collapse-item title="样式设置" name="2"> -->
       <div class="line-layout style-item">
-        <value-select v-model="innerElement.fontClass" label="文字" :data="fontClassList" inputWidth="167px" textAlign="left" :readonly="true" @finish="(font) => finish('fontClass', font)" />
+        <value-select v-model="innerElement.fontClass" label="文字" :data="fontClassList" inputWidth="167px" :readonly="true" @finish="(font) => finish('fontClass', font)" />
         <value-select v-model="innerElement.fontSize" label="大小" suffix="px" :data="fontSizeList" @finish="(value) => finish('fontSize', value)" />
       </div>
 
