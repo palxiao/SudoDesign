@@ -60,6 +60,7 @@ import { defineComponent } from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 import { getTarget } from '@/common/methods/target'
 import setImageData from '@/common/methods/DesignFeatures/setImage'
+import PointImg from '@/utils/plugins/PointImg'
 
 // 页面设计组件
 const NAME = 'page-design'
@@ -82,6 +83,7 @@ export default defineComponent({
   mounted() {
     this.getScreen()
     document.getElementById('page-design').addEventListener('mousedown', this.handleSelection, false)
+    // document.getElementById('page-design').addEventListener('mousemove', this.handleMouseMove, false)
   },
   beforeUnmount() {},
   methods: {
@@ -174,14 +176,23 @@ export default defineComponent({
         height: screen.offsetHeight,
       })
     },
+    async handleMouseMove(e) {
+      const pImg = new PointImg(e.target)
+      const { rgba } = pImg.getColorXY(e.offsetX, e.offsetY)
+      console.log(rgba)
+      if (rgba && rgba === 'rgba(0,0,0,0)') {
+        let target = await getTarget(e.target)
+        target.style.pointerEvents = 'none'
+        setTimeout(() => {
+          target.style.pointerEvents = 'auto'
+        }, 300)
+      }
+    },
     async handleSelection(e) {
-      // const bmd = new BitmapData(e.currentTarget.width, e.currentTarget.height, true, 0x00000000)
-      // bmd.draw(e.currentTarget)
       if (e.which === 3) {
         return
       }
-      // 处理复杂子节点组件
-      // let target = e.target
+
       let target = await getTarget(e.target)
       let type = target.getAttribute('data-type')
 

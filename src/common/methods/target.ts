@@ -3,7 +3,7 @@
  * @Date: 2021-08-10 15:42:12
  * @Description: 处理与目标组件相关
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-01-20 22:44:06
+ * @LastEditTime: 2022-03-06 17:51:42
  * @site: book.palxp.com / blog.palxp.com
  */
 // Group类型比较特殊，所以需要全量循环并判断是否为group
@@ -32,7 +32,6 @@ export function getTarget(currentTarget: any) {
           return arr.includes(x)
         }),
       )
-
       findTarget(target.parentElement)
     }
     findTarget(currentTarget)

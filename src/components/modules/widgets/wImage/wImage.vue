@@ -27,6 +27,7 @@ const NAME = 'w-image'
 
 import { mapGetters, mapActions } from 'vuex'
 import { getMatrix } from '@/common/methods/handleTransform'
+import PointImg from '@/utils/plugins/PointImg'
 
 export default {
   name: NAME,
@@ -164,6 +165,8 @@ export default {
         record.height = this.$refs.widget.offsetHeight
       }
       this.updateZoom()
+      // 获取点位
+      const read = new PointImg(this.$refs.target)
     },
     setTransform(attrName, value) {
       const iof = this.params.transform.indexOf(attrName)
