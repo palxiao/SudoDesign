@@ -87,7 +87,6 @@ export default {
 
 <style lang="less" scoped>
 // Color variables (appears count calculates by raw css)
-@color0: #3b74f1; // Appears 2 times
 @color1: #3e4651; // Appears 2 times
 
 #widget-panel {

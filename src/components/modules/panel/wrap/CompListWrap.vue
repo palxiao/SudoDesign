@@ -3,7 +3,7 @@
  * @Date: 2021-08-27 15:16:07
  * @Description: 素材列表
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-23 23:43:26
+ * @LastEditTime: 2022-03-07 15:05:27
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -51,6 +51,7 @@ import { defineComponent, reactive, toRefs, onMounted, watch } from 'vue'
 // import { ElDivider } from 'element-plus'
 import api from '@/api'
 import { mapActions } from 'vuex'
+import getComponentsData from '@/common/methods/DesignFeatures/setComponents'
 
 export default defineComponent({
   // components: { ElDivider },
@@ -152,14 +153,15 @@ export default defineComponent({
     async selectItem(item: any) {
       this.$store.commit('setShowMoveable', false) // 清理掉上一次的选择
       const res = await api.home.getTempDetail({ id: item.id, type: 1 })
-      const group = JSON.parse(res.data)
+      // let group = JSON.parse(res.data)
+      const group: any = await getComponentsData(res.data)
       let parent: any = { x: 0, y: 0 }
+      const { width: pW, height: pH } = this.$store.getters.dPage
       Array.isArray(group) &&
         group.forEach((element: any) => {
           element.type === 'w-group' && (parent = element)
         })
       if (parent.isContainer) {
-        const { width: pW, height: pH } = this.$store.getters.dPage
         group.forEach((element: any) => {
           element.left += (pW - parent.width) / 2
           element.top += (pH - parent.height) / 2
@@ -167,6 +169,8 @@ export default defineComponent({
         this.addGroup(group)
       } else {
         group.text && (group.text = decodeURIComponent(group.text))
+        group.left = pW / 2 - group.fontSize * (group.text.length / 2)
+        group.top = pH / 2 - group.fontSize / 2
         this.addWidget(group)
       }
     },

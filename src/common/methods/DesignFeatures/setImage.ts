@@ -3,7 +3,7 @@
  * @Date: 2022-02-22 15:06:14
  * @Description: 设置图片类型元素
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-22 15:39:19
+ * @LastEditTime: 2022-03-07 14:16:48
  * @site: book.palxp.com / blog.palxp.com
  */
 import store from '@/store'
@@ -23,7 +23,9 @@ export default async function setItem2Data(item: any) {
     ratio = Math.min(screenWidth / imgWidth, screenHeight / imgHeight)
   }
   // 根据画布缩放比例再进行一次调整
-  cloneItem.width = item.width * ratio * (store.getters.dZoom / 100)
-  cloneItem.height = item.height * ratio * (store.getters.dZoom / 100)
+  if (ratio < 1) {
+    cloneItem.width = item.width * ratio * (store.getters.dZoom / 100)
+    cloneItem.height = item.height * ratio * (store.getters.dZoom / 100)
+  }
   return cloneItem
 }

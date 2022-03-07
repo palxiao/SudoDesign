@@ -3,7 +3,7 @@
  * @Date: 2021-08-02 19:10:06
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-05 18:03:40
+ * @LastEditTime: 2022-03-07 13:37:40
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -225,7 +225,7 @@ export default {
       background: transparent;
       border-radius: 3px;
       border: 0px;
-      font-size: 13px;
+      font-size: 14px;
       height: 40px;
       outline: none;
       padding: 6px;

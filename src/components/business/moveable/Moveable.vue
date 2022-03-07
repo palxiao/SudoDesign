@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-05 15:26:49
+ * @LastEditTime: 2022-03-07 15:09:50
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -346,20 +346,32 @@ export default defineComponent({
             // 转换成位置
             const left = e.lastEvent.drag.translate[0]
             const top = e.lastEvent.drag.translate[1]
-            this.updateWidgetData({
+            // this.updateWidgetData({
+            //   uuid: this.dActiveElement.uuid,
+            //   key: 'left',
+            //   value: Number(this.dActiveElement.left) + left,
+            // })
+            // this.updateWidgetData({
+            //   uuid: this.dActiveElement.uuid,
+            //   key: 'top',
+            //   value: Number(this.dActiveElement.top) + top,
+            // })
+            this.updateWidgetMultiple({
               uuid: this.dActiveElement.uuid,
-              key: 'left',
-              value: Number(this.dActiveElement.left) + left,
-            })
-            this.updateWidgetData({
-              uuid: this.dActiveElement.uuid,
-              key: 'top',
-              value: Number(this.dActiveElement.top) + top,
+              data: [
+                {
+                  key: 'left',
+                  value: Number(this.dActiveElement.left) + left,
+                },
+                {
+                  key: 'top',
+                  value: Number(this.dActiveElement.top) + top,
+                },
+              ],
             })
             this.moveable.updateRect()
-          }, 10)
+          }, 300)
         }
-
         if (this.resizeTempData) {
           this.$store.commit('resize', this.resizeTempData)
           this.resizeTempData = null
@@ -370,16 +382,6 @@ export default defineComponent({
           String(d) === '1,1' && (this.dActiveElement.fontSize = this.dActiveElement.fontSize * this.resetRatio)
         }
         moveable.keepRatio = true
-
-        // 强制失焦再聚焦
-        // this.$store.commit('setShowMoveable', false)
-        // this.moveable.target = `[id="empty"]`
-        // this.$nextTick(() => {
-        //   setTimeout(() => {
-        //     this.moveable.target = this._target
-        //     // this.$store.commit('setShowMoveable', true)
-        //   }, 10)
-        // })
       })
       .on('resizeGroupStart', ({ events }: any) => {
         console.log(events)
@@ -465,7 +467,7 @@ export default defineComponent({
     })
   },
   methods: {
-    ...mapActions(['updateWidgetData', 'selectWidgetsInOut']),
+    ...mapActions(['updateWidgetData', 'updateWidgetMultiple', 'selectWidgetsInOut']),
     // switchClip() {
     //   this.moveable.clippable = !this.moveable.clippable
     // },

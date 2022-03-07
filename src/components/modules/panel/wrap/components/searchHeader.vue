@@ -3,7 +3,7 @@
  * @Date: 2022-01-27 11:05:48
  * @Description:  
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-03 17:48:37
+ * @LastEditTime: 2022-03-07 11:44:43
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -104,7 +104,7 @@ export default defineComponent({
     font-weight: bold;
   }
   &--select {
-    color: @deep-main;
+    color: @main-color;
   }
 }
 </style>

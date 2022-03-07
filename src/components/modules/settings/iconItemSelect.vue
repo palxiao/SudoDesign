@@ -3,7 +3,7 @@
  * @Date: 2021-07-29 18:31:27
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-05 17:49:09
+ * @LastEditTime: 2022-03-07 11:45:25
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -89,7 +89,7 @@ export default {
       }
     }
     .list-item.active {
-      color: #3b74f1;
+      color: @main-color;
       font-weight: bold;
       // color: #ffffff;
     }

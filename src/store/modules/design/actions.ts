@@ -126,6 +126,42 @@ export default {
       // store.dispatch('reChangeCanvas')
     }
   },
+  updateWidgetMultiple(store, { uuid, data, pushHistory }) {
+    for (const item of data) {
+      const { key, value } = item
+      const widget = store.state.dWidgets.find((item) => item.uuid === uuid)
+      if (widget && (widget[key] !== value || pushHistory)) {
+        switch (key) {
+          case 'left':
+          case 'top':
+            if (widget.isContainer) {
+              let dLeft = widget.left - value
+              let dTop = widget.top - value
+              if (key === 'left') {
+                dTop = 0
+              }
+              if (key === 'top') {
+                dLeft = 0
+              }
+              const len = store.state.dWidgets.length
+              for (let i = 0; i < len; ++i) {
+                const child = store.state.dWidgets[i]
+                if (child.parent === widget.uuid) {
+                  child.left -= dLeft
+                  child.top -= dTop
+                }
+              }
+            }
+            break
+        }
+
+        widget[key] = value
+      }
+    }
+    setTimeout(() => {
+      store.dispatch('pushHistory')
+    }, 100)
+  },
   addWidget(store: any, setting: any) {
     setting.uuid = nanoid()
     store.state.dWidgets.push(setting)

@@ -3,7 +3,7 @@
  * @Date: 2021-08-29 18:17:13
  * @Description: 二次封装上传组件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-24 00:19:41
+ * @LastEditTime: 2022-03-07 15:51:59
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -30,8 +30,11 @@ export default defineComponent({
         return { bucket: 'cloud-design', prePath: 'user' }
       },
     },
+    hold: {
+      default: false, // 是否阻止上传操作，仅做文件选择
+    },
   },
-  emits: ['done', 'update:modelValue'],
+  emits: ['done', 'update:modelValue', 'load'],
   setup(props, context) {
     let uploading: boolean = false // 上传状态Flag
     let timer: any = null
@@ -74,10 +77,15 @@ export default defineComponent({
     const qiNiuUpload = async (file: File) => {
       updatePercent(0)
       return new Promise(async (resolve: Function) => {
-        const result: any = await Qiniu.upload(file, props.options, (res: Type.Object) => {
-          updatePercent(res.total.percent)
-        })
-        resolve(result)
+        if (props.hold) {
+          context.emit('load', file)
+          resolve()
+        } else {
+          const result: any = await Qiniu.upload(file, props.options, (res: Type.Object) => {
+            updatePercent(res.total.percent)
+          })
+          resolve(result)
+        }
       })
     }
     // 更新视图

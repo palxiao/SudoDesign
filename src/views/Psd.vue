@@ -3,7 +3,7 @@
  * @Date: 2022-01-10 14:57:53
  * @Description: Psd文件解析
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-01-17 08:56:58
+ * @LastEditTime: 2022-03-07 15:52:08
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -21,11 +21,11 @@
     <div class="page-design-index-wrap">
       <!-- <widget-panel></widget-panel> -->
       <design-board class="page-design-wrap" pageDesignCanvasId="page-design-canvas">
-        <uploader v-if="!isDone" accept=".psd" :hold="true" :drag="true" class="uploader" :options="{}" @load="selectFile">
+        <uploader v-if="!isDone" accept=".psd" :hold="true" :drag="true" class="uploader" @load="selectFile">
           <div class="uploader__box"><img style="margin-right: 1rem" src="https://cdn.dancf.com/design/svg/icon_psdimport.37e6f23e.svg" /> 在此拖入或选择PSD文件</div>
         </uploader>
       </design-board>
-      <style-panel></style-panel>
+      <style-panel v-show="isDone"></style-panel>
     </div>
     <!-- 缩放控制 -->
     <zoom-control ref="zoomControl" />
@@ -62,10 +62,12 @@ export default defineComponent({
 
     function loadJS() {
       const link_element = document.createElement('script')
-      link_element.setAttribute('src', 'https://rmt-design-dev.imp360.cn/web/psd.js')
+      link_element.setAttribute('src', '/psd.js') // 'http://sudo.palxp.com/psd.js.gz'
       document.head.appendChild(link_element)
     }
     async function selectFile(file: any) {
+      console.log(111)
+
       loading = useLoading()
       await loadPSD(file)
       loading.close()

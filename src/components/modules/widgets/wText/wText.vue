@@ -133,6 +133,8 @@ export default {
           document.fonts.add(loadFont)
           this.loadFontDone = font.value
           this.loading = false
+        } else {
+          this.loading = false
         }
       },
       immediate: true,
