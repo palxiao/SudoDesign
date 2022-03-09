@@ -63,7 +63,7 @@ export default defineComponent({
     // }
     function jump2home() {
       const fullPath = window.location.href.split('/')
-      window.open(fullPath[0] + '//' + fullPath[2], '_self')
+      window.open(fullPath[0] + '//' + fullPath[2])
     }
     return {
       ...toRefs(state),

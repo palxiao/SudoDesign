@@ -3,7 +3,7 @@
  * @Date: 2021-08-01 14:12:08
  * @Description: 快捷键
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-02-12 10:05:40
+ * @LastEditTime: 2022-03-09 14:25:22
  * @site: book.palxp.com / blog.palxp.com
  */
 import store from '@/store'
@@ -12,6 +12,8 @@ _this.dHistoryParams = store.getters.dHistoryParams
 // _this.dActiveElement = store.getters.dActiveElement
 // _this.dPage = store.getters.dPage
 // _this.handleHistory = store.dispatch.ha
+
+import keyCodeOptions from './methods/keyCodeOptions'
 
 const ignoreNode = ['INPUT', 'TEXTAREA']
 
@@ -109,26 +111,7 @@ const shortcuts = {
       // e.stopPropagation()
       // e.preventDefault()
       const f = withShift ? 10 : 1
-      switch (e.keyCode) {
-        case 38:
-          this.udlr('top', -1 * f, e)
-          break
-        case 40:
-          this.udlr('top', Number(f), e)
-          break
-        case 37:
-          this.udlr('left', -1 * f, e)
-          break
-        case 39:
-          this.udlr('left', Number(f), e)
-          break
-        case 46:
-        case 8:
-          // if (this.dActiveElement.isContainer) {
-          // }
-          !this.dActiveElement.editable && this.$store.dispatch('deleteWidget')
-          break
-      }
+      keyCodeOptions(e, { f })
     },
     handleKeyup(e) {
       console.log(e)
@@ -138,20 +121,7 @@ const shortcuts = {
         this.$store.dispatch('updateAltDown', false)
       }
     },
-    /**
-     * TODO 键盘操作上下左右移动组件
-     */
-    udlr(type: any, value: any, event: any) {
-      if (this.dActiveElement.uuid != -1) {
-        event.preventDefault()
-        const result = Number(this.dActiveElement[type]) + value
-        this.$store.dispatch('updateWidgetData', {
-          uuid: this.dActiveElement.uuid,
-          key: type,
-          value: result,
-        })
-      }
-    },
+
     dealCtrl(e) {
       console.log(e.key, e.keyCode)
       switch (e.keyCode) {

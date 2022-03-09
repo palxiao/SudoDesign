@@ -3,7 +3,7 @@
  * @Date: 2022-03-04 19:36:00
  * @Description:
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-04 20:16:29
+ * @LastEditTime: 2022-03-09 15:29:11
  * @site: book.palxp.com / blog.palxp.com
  */
 export default function pushHistory(store: any) {
@@ -34,8 +34,8 @@ export default function pushHistory(store: any) {
     uuidHistory.push(store.state.dActiveElement.uuid)
     pageHistory.push(JSON.stringify(store.state.dPage))
   }
-  // 历史记录最多10条，如果超过则从头部开始删，因为每次都是一条一条加的，所以只需删一条就行
-  if (history.length > 10) {
+  // 历史记录最多20条，如果超过则从头部开始删，因为每次都是一条一条加的，所以只需删一条就行
+  if (history.length > 20) {
     history.splice(0, 1)
     uuidHistory.splice(0, 1)
     pageHistory.splice(0, 1)

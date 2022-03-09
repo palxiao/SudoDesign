@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-04 20:15:41
+ * @LastEditTime: 2022-03-09 15:56:27
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -57,6 +57,7 @@ export default defineComponent({
       const { id: newId, stat, msg } = await api.home.saveWorks({ simple, id, title: proxy.title || '未命名设计', data: JSON.stringify({ page: proxy.dPage, widgets: proxy.dWidgets }), temp_id: tempid, width: proxy.dPage.width, height: proxy.dPage.height })
       stat != 0 ? useNotification('保存成功', '可在"我的作品"中查看') : useNotification('保存失败', msg, 'error')
       !id && router.push({ path: '/home', query: { id: newId }, replace: true })
+      store.commit('setShowMoveable', true)
     }
     // 保存模板
     async function saveTemp() {

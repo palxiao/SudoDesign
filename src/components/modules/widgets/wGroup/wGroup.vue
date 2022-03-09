@@ -3,13 +3,13 @@
  * @Date: 2021-08-02 09:41:41
  * @Description: 
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-05 15:25:54
+ * @LastEditTime: 2022-03-09 14:15:50
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
   <div
     ref="widget"
-    class="w-group"
+    :class="['w-group', { 'layer-lock': params.lock }]"
     :style="{
       position: 'absolute',
       left: params.left - parent.left + 'px',

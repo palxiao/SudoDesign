@@ -2,7 +2,7 @@
   <div id="zoom-control">
     <ul v-show="show" class="zoom-selecter">
       <li v-for="(item, index) in zoomList" :key="index" :class="['zoom-item', { 'zoom-item-active': activezoomIndex === index }]" @click.stop="selectItem(index)">
-        <i v-if="item.icon" :class="['iconfont', item.icon]"></i>
+        <!-- <i v-if="item.icon" :class="['iconfont', item.icon]"></i> -->
         <span>{{ item.text }}</span>
         <i v-if="activezoomIndex === index" class="iconfont icon-selected"></i>
       </li>

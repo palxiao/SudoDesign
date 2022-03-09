@@ -3,7 +3,7 @@
  * @LastEditors: ShawnPhang
  * @Description: Setting
  * @Date: 2021-07-13 02:48:38
- * @LastEditTime: 2022-03-07 20:21:51
+ * @LastEditTime: 2022-03-09 11:19:58
  * @site: book.palxp.com / blog.palxp.com
  */
 
@@ -21,5 +21,5 @@ export default {
   API_URL: isDev ? 'http://localhost:9998' : '${API}',
   IMG_URL: 'http://store.palxp.com/',
   ICONFONT_URL: '//at.alicdn.com/t/font_2717063_ypy8vprc3b.css',
-  ICONFONT_EXTRA: '//at.alicdn.com/t/font_3228074_69ctqih7vn.css',
+  ICONFONT_EXTRA: '//at.alicdn.com/t/font_3228074_2t1ajcjkgch.css',
 }

@@ -3,7 +3,7 @@
  * @Date: 2022-03-07 17:25:19
  * @Description: 图层组件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-08 23:06:54
+ * @LastEditTime: 2022-03-09 16:03:37
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -23,7 +23,9 @@
           <img v-if="element.imgUrl" class="widget-type widget-type__img" :src="element.imgUrl" />
           <span v-else :class="['widget-type icon', `sd-${element.type}`, element.type]"></span>
           <span :class="['widget-name', 'line-clamp-1', `${element.type}`]">{{ element.text || element.name }}</span>
-          <div class="widget-out" :data-type="element.type" :data-uuid="element.uuid"></div>
+          <div class="widget-out" :data-type="element.type" :data-uuid="element.uuid">
+            <i :class="['icon', element.lock ? 'sd-suoding' : 'sd-jiesuo']" @click.stop="lockLayer(element)" />
+          </div>
         </li>
       </template>
     </draggable>
@@ -129,8 +131,18 @@ export default defineComponent({
       state.drag = false
       context.emit('change', widgets.value)
     }
+    // 锁定图层
+    const lockLayer = (item: any) => {
+      store.dispatch('updateWidgetData', {
+        uuid: item.uuid,
+        key: 'lock',
+        value: typeof item.lock === 'undefined' ? true : !item.lock,
+        pushHistory: false,
+      })
+      // item.lock = typeof item.lock === 'undefined' ? true : !item.lock
+    }
 
-    return { onDone, onMove, selectLayer, hoverLayer, widgets, getWidgets, getIsActive, ...toRefs(state), dragOptions, showItem }
+    return { lockLayer, onDone, onMove, selectLayer, hoverLayer, widgets, getWidgets, getIsActive, ...toRefs(state), dragOptions, showItem }
   },
   watch: {
     data: {
@@ -182,16 +194,22 @@ export default defineComponent({
     .widget-name {
       flex: 1;
       font-size: 14px;
+      padding-right: 22px;
     }
     .widget-out {
       height: 100%;
       margin-left: -12px;
       position: absolute;
       width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .widget-out:hover > .sd-jiesuo {
+      opacity: 1;
     }
   }
   .widget.active {
-    background-color: #666666;
+    background-color: #888888;
     color: @color0;
   }
   .item-one {
@@ -205,7 +223,18 @@ export default defineComponent({
 .w-group {
   font-weight: bold;
 }
-
+// icons
+.sd-jiesuo,
+.sd-suoding {
+  position: absolute;
+  right: 12px;
+  font-size: 18px;
+  cursor: default;
+  color: #444444;
+}
+.sd-jiesuo {
+  opacity: 0;
+}
 .sd-xiaji {
   margin: 0 -4px 0 32px !important;
 }

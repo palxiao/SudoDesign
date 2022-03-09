@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-08 13:52:56
+ * @LastEditTime: 2022-03-09 14:11:05
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -441,10 +441,12 @@ export default defineComponent({
     })
     selecto.on('select', (e) => {
       e.added.forEach((el) => {
-        el.classList.add('widget-selected')
-        this.selectWidgetsInOut({
-          uuid: el.getAttribute('data-uuid'),
-        })
+        if (!Array.from(el.classList).includes('layer-lock') && !el.hasAttribute('child')) {
+          el.classList.add('widget-selected')
+          this.selectWidgetsInOut({
+            uuid: el.getAttribute('data-uuid'),
+          })
+        }
       })
       e.removed.forEach((el) => {
         el.classList.remove('widget-selected')

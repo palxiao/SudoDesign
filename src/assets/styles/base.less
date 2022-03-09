@@ -95,7 +95,6 @@
 }
 
 // 点击选择框样式
-
 .layer {
   &:hover {
     outline: 2px dashed @main-color !important;
@@ -117,4 +116,8 @@
   &:hover {
     outline: 2px dashed @main-color !important;
   }
+}
+// 锁定不可选中
+.layer-lock {
+  pointer-events: none;
 }
