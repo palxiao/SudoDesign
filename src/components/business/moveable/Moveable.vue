@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-07 15:09:50
+ * @LastEditTime: 2022-03-08 13:52:56
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>

@@ -12,7 +12,7 @@
       <component :is="dActiveElement.type + '-style'" v-show="!showGroupCombined" v-if="dActiveElement.type" />
     </div>
     <div v-show="activeTab === 1" class="layer-wrap">
-      <layer-list :data="dWidgets" />
+      <layer-list :data="dWidgets" @change="layerChange" />
     </div>
   </div>
 </template>
@@ -35,29 +35,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['dActiveElement', 'dWidgets', 'dPage', 'dSelectWidgets']),
-    // getWidgets() {
-    //   let widgets = []
-    //   let len = this.dWidgets.length
-    //   let childs = []
-    //   for (let i = len - 1; i >= 0; --i) {
-    //     let widget = JSON.parse(JSON.stringify(this.dWidgets[i]))
-    //     if (widget.parent === '-1') {
-    //       widgets.push(widget)
-    //       if (widget.isContainer) {
-    //         widgets = widgets.concat(childs)
-    //         childs = []
-    //       }
-    //     } else {
-    //       childs.push(widget)
-    //     }
-    //   }
-    //   if (childs.length > 0) {
-    //     widgets = widgets.concat(childs)
-    //   }
-
-    //   return widgets
-    // },
+    ...mapGetters(['dActiveElement', 'dWidgets', 'dSelectWidgets']),
   },
   watch: {
     dSelectWidgets: {
@@ -85,12 +63,15 @@ export default {
         this.pushHistory()
       })
     },
+    layerChange(newLayer) {
+      this.$store.commit('setDWidgets', newLayer.reverse())
+      this.$store.commit('setShowMoveable', false)
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
-// Color variables (appears count calculates by raw css)
 @color0: #ffffff; // Appears 5 times
 @color1: #999999; // Appears 3 times
 @color2: #d7d7d7; // Appears 2 times
@@ -115,7 +96,7 @@ export default {
     z-index: 10;
     .tab {
       background-color: @color0;
-      font-size: 15px;
+      font-size: 14px;
       color: @color1;
       cursor: pointer;
       flex: 1;
@@ -123,6 +104,7 @@ export default {
     }
     .tab.active-tab {
       // background-color: #3e4651;
+      font-size: 15px;
       color: #444444;
       font-weight: 600;
     }

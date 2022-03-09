@@ -229,15 +229,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@color-main: #1b1634;
-@color1: #262c33; // Appears 4 times
-@color2: #3e4651; // Appears 3 times
-@color3: #ffffff; // Appears 3 times
-@color4: #808080; // Appears 2 times
-@color5: #50555b; // Appears 2 times
+@color-select: #1b1634;
+@color1: #ffffff; // 选项板背景
+@color2: #ffffff; // Appears 3 times
+@color3: #666666; // 文字主颜色
+@color4: #c2c2c2; // 禁用
+@color5: rgba(0, 0, 0, 0.12); // 高亮选项背景
+@z-border-color: #e6e6e6;
 
 #zoom-control {
-  bottom: 50px;
+  bottom: 20px;
   position: absolute;
   right: 320px;
   z-index: 1000;
@@ -249,10 +250,14 @@ export default {
     .radius-left {
       border-bottom-left-radius: 50%;
       border-top-left-radius: 50%;
+      border-block-end: 1px solid @z-border-color;
+      border-block-start: 1px solid @z-border-color;
     }
     .radius-right {
       border-bottom-right-radius: 50%;
       border-top-right-radius: 50%;
+      border-block-end: 1px solid @z-border-color;
+      border-block-start: 1px solid @z-border-color;
     }
     .zoom-icon {
       align-items: center;
@@ -264,7 +269,7 @@ export default {
       width: 40px;
       &:hover {
         background-color: @color1;
-        color: @color-main;
+        color: @color-select;
       }
     }
     .disable {
@@ -283,9 +288,11 @@ export default {
       display: flex;
       justify-content: center;
       width: 60px;
+      border-block-end: 1px solid @z-border-color;
+      border-block-start: 1px solid @z-border-color;
       &:hover {
         background-color: @color1;
-        color: @color-main;
+        color: @color-select;
       }
     }
   }
@@ -293,7 +300,7 @@ export default {
     background-color: @color1;
     color: @color3;
     position: absolute;
-    top: -10px;
+    top: -8px;
     transform: translateY(-100%);
     width: 100%;
     z-index: 1000;
@@ -323,17 +330,17 @@ export default {
       }
       &:hover {
         background-color: @color5;
-        color: @color-main;
+        color: @color-select;
       }
     }
   }
 }
-#zoom-control-active {
-  background-color: @color1;
-  background-color: @color5;
-  color: @color-main;
-  color: @color-main;
-}
+// #zoom-control-active {
+//   background-color: @color1;
+//   background-color: @color5;
+//   color: @color-select;
+//   color: @color-select;
+// }
 </style>
 
 

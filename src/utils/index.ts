@@ -3,7 +3,7 @@
  * @Date: 2021-07-13 02:48:38
  * @Description:
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2021-08-02 18:15:02
+ * @LastEditTime: 2022-03-07 20:25:54
  * @site: book.palxp.com / blog.palxp.com
  */
 // import store from '../store'
@@ -21,6 +21,7 @@ export default {
     /** 全局组件注册 */
     modules(myVue)
     /** iconfont 注入 */
+    cssLoader(_config.ICONFONT_EXTRA)
     cssLoader(_config.ICONFONT_URL)
 
     myVue.config.globalProperties.$ajax = services
