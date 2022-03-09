@@ -73,7 +73,7 @@ export default {
       innerElement: {},
       tag: false,
       ingoreKeys: ['left', 'top', 'name', 'width', 'height', 'text', 'color', 'backgroundColor'],
-      fontSizeList: ['12', '14', '24', '26', '28', '30', '36', '48', '60', '72', '96', '108', '120', '140', '180', '200', '250', '300', '400', '500'],
+      fontSizeList: [12, 14, 24, 26, 28, 30, 36, 48, 60, 72, 96, 108, 120, 140, 180, 200, 250, 300, 400, 500],
       fontClassList: [
         // {
         //   id: 206607,
@@ -82,8 +82,8 @@ export default {
         //   url: 'https://st0.dancf.com/csc/213/fonts/229/20210601-182228-08fb.woff',
         // },
       ], // 不允许空字体，因为截图服务的默认字体无法保证一致
-      lineHeightList: ['1', '1.5', '2'],
-      letterSpacingList: ['0', '10', '25', '50', '75', '100', '200'],
+      lineHeightList: [1, 1.5, 2],
+      letterSpacingList: [0, 10, 25, 50, 75, 100, 200],
       layerIconList: [
         {
           key: 'zIndex',

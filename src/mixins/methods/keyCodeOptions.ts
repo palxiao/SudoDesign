@@ -1,14 +1,14 @@
 /*
  * @Author: ShawnPhang
  * @Date: 2022-03-09 14:20:09
- * @Description:
+ * @Description: 处理常用操作
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-09 14:38:55
+ * @LastEditTime: 2022-03-09 17:13:11
  * @site: book.palxp.com / blog.palxp.com
  */
 import store from '@/store'
 
-export default function(e: any, params: any) {
+export default function keyCodeOptions(e: any, params: any) {
   const { f } = params
   switch (e.keyCode) {
     case 38:

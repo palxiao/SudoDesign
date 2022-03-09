@@ -3,7 +3,7 @@
  * @Date: 2021-08-01 14:12:08
  * @Description: 快捷键
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-09 14:25:22
+ * @LastEditTime: 2022-03-09 17:10:38
  * @site: book.palxp.com / blog.palxp.com
  */
 import store from '@/store'
@@ -13,7 +13,8 @@ _this.dHistoryParams = store.getters.dHistoryParams
 // _this.dPage = store.getters.dPage
 // _this.handleHistory = store.dispatch.ha
 
-import keyCodeOptions from './methods/keyCodeOptions'
+import keyCodeOptions from './methods/KeyCodeOptions'
+import dealWithCtrl from './methods/DealWithCtrl'
 
 const ignoreNode = ['INPUT', 'TEXTAREA']
 
@@ -121,41 +122,9 @@ const shortcuts = {
         this.$store.dispatch('updateAltDown', false)
       }
     },
-
-    dealCtrl(e) {
+    dealCtrl(e: any) {
+      dealWithCtrl(e)
       console.log(e.key, e.keyCode)
-      switch (e.keyCode) {
-        case 71: // g
-          e.preventDefault()
-          this.$store.dispatch('realCombined')
-          break
-        case 67: // c
-          if (this.dActiveElement.uuid === '-1') {
-            return
-          }
-          this.$store.dispatch('copyWidget')
-          break
-        case 86: // v
-          if (this.dCopyElement.length === 0) {
-            return
-          }
-          this.$store.dispatch('pasteWidget')
-          break
-        case 90: // z
-          if (e.shiftKey) {
-            if (!(_this.dHistoryParams.index === _this.dHistoryParams.length - 1)) {
-              // this.handleHistory('redo')
-              this.$store.dispatch('handleHistory', 'redo')
-            }
-          } else if (!(_this.dHistoryParams.index === -1 || (_this.dHistoryParams === 0 && _this.dHistoryParams.length === 10))) {
-            // this.handleHistory('undo')
-            this.$store.dispatch('handleHistory', 'undo')
-          }
-          break
-        case 83: // s
-          // this.save()
-          break
-      }
     },
   },
 }
