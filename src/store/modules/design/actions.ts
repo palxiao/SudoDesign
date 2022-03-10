@@ -17,12 +17,14 @@ export default {
    * action为redo表示重做
    */
   handleHistory(store, action) {
+    store.commit('setShowMoveable', false) // 清理掉上一次的选择框
     const history = store.state.dHistory
     const uuidHistory = store.state.dActiveUuidHistory
     const pageHistory = store.state.dPageHistory
     const historyParams = store.state.dHistoryParams
 
     let uuid = '-1'
+    console.log(action, historyParams)
 
     if (action === 'undo') {
       // 下标向前移1
@@ -121,7 +123,7 @@ export default {
       widget[key] = value
 
       setTimeout(() => {
-        store.dispatch('pushHistory')
+        pushHistory && store.dispatch('pushHistory')
       }, 100)
       // store.dispatch('reChangeCanvas')
     }
@@ -160,7 +162,7 @@ export default {
     }
     setTimeout(() => {
       store.dispatch('pushHistory')
-    }, 100)
+    }, 300)
   },
   addWidget(store: any, setting: any) {
     setting.uuid = nanoid()

@@ -128,7 +128,7 @@ export default {
     this.loadFonts()
   },
   methods: {
-    ...mapActions(['updateWidgetData', 'updateAlign', 'updateLayerIndex']),
+    ...mapActions(['updateWidgetData', 'updateAlign', 'updateLayerIndex', 'pushHistory']),
     testEffect({ key, value, style }) {
       const uuid = this.dActiveElement.uuid
       this.$store.commit('setWidgetStyle', { uuid, key, value })
@@ -166,14 +166,18 @@ export default {
       if (this.dMoving) {
         return
       }
+      // TODO 修改数值
       for (let key in this.innerElement) {
         if (this.ingoreKeys.indexOf(key) !== -1) {
           this.dActiveElement[key] = this.innerElement[key]
         } else if (key !== 'setting' && key !== 'record' && this.innerElement[key] !== this.dActiveElement[key]) {
+          // console.log('???', key)
+          // const pushHistory = !['textEffects', 'transformData', 'fontClass'].includes(key)
           this.updateWidgetData({
             uuid: this.dActiveElement.uuid,
-            key: key,
+            key,
             value: this.innerElement[key],
+            pushHistory: false,
           })
         }
       }
@@ -183,7 +187,7 @@ export default {
         uuid: this.dActiveElement.uuid,
         key: key,
         value: value,
-        pushHistory: true,
+        pushHistory: false,
       })
     },
     layerAction(item) {

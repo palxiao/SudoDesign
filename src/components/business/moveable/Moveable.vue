@@ -3,7 +3,7 @@
  * @Date: 2021-08-04 11:46:39
  * @Description: 原版movable插件
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-09 14:11:05
+ * @LastEditTime: 2022-03-10 18:06:12
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -226,6 +226,9 @@ export default defineComponent({
             value: this.holdPosition?.top,
           })
           this.holdPosition = null // important
+          setTimeout(() => {
+            this.pushHistory()
+          }, 300)
         }
       })
       // .on('keyUp', (e) => {
@@ -469,7 +472,7 @@ export default defineComponent({
     })
   },
   methods: {
-    ...mapActions(['updateWidgetData', 'updateWidgetMultiple', 'selectWidgetsInOut']),
+    ...mapActions(['updateWidgetData', 'updateWidgetMultiple', 'selectWidgetsInOut', 'pushHistory']),
     // switchClip() {
     //   this.moveable.clippable = !this.moveable.clippable
     // },

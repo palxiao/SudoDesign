@@ -146,6 +146,7 @@ export default {
         uuid: this.params.uuid,
         key: 'editable',
         value,
+        pushHistory: false,
       })
     },
   },
@@ -196,6 +197,7 @@ export default {
           uuid: this.params.uuid,
           key: 'text',
           value,
+          pushHistory: false,
         })
       }
     },
@@ -205,6 +207,7 @@ export default {
         uuid: this.params.uuid,
         key: 'height',
         value: this.$refs.editWrap.offsetHeight,
+        pushHistory: false,
       })
       this.$store.commit('updateRect')
     },
