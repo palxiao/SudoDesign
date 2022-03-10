@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-09 15:56:27
+ * @LastEditTime: 2022-03-10 09:31:37
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -79,9 +79,19 @@ export default defineComponent({
           const { width, height } = proxy.dPage
           context.emit('update:modelValue', true)
           context.emit('change', { downloadPercent: 1, downloadText: '准备合成图片' })
+          let timerCount = 0
+          const animation = setInterval(() => {
+            if (props.modelValue && timerCount < 90) {
+              timerCount += RandomNumber(1, 10)
+              context.emit('change', { downloadPercent: 1 + timerCount, downloadText: '正在合成图片' })
+            } else {
+              clearInterval(animation)
+            }
+          }, 1000)
           await downloadImg(api.home.download({ id, width, height }) + '&r=' + Math.random(), (progress: number, xhr: any) => {
             if (props.modelValue) {
-              context.emit('change', { downloadPercent: Number(progress.toFixed(0)), downloadText: '图片生成中' })
+              clearInterval(animation)
+              progress >= timerCount && context.emit('change', { downloadPercent: Number(progress.toFixed(0)), downloadText: '图片生成中' })
             } else {
               xhr.abort()
             }
@@ -89,6 +99,9 @@ export default defineComponent({
           context.emit('change', { downloadPercent: 0, downloadText: '' })
         }
       }, 100)
+    }
+    function RandomNumber(min: number, max: number) {
+      return Math.ceil(Math.random() * (max - min)) + min
     }
 
     return {

@@ -11,6 +11,7 @@
       width: Math.max(params.fontSize, params.width) + 'px',
       minWidth: params.fontSize + 'px',
       minHeight: params.fontSize * params.lineHeight + 'px',
+      height: params.height + 'px',
       lineHeight: params.fontSize * params.lineHeight + 'px',
       letterSpacing: (params.fontSize * params.letterSpacing) / 100 + 'px',
       fontSize: params.fontSize + 'px',
@@ -199,6 +200,12 @@ export default {
       }
     },
     writingText() {
+      // TODO: 修正文字选框高度
+      this.updateWidgetData({
+        uuid: this.params.uuid,
+        key: 'height',
+        value: this.$refs.editWrap.offsetHeight,
+      })
       this.$store.commit('updateRect')
     },
     writeDone(e) {

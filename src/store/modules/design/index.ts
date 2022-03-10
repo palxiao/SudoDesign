@@ -3,6 +3,7 @@ import actions from './actions'
 const all = {
   state: {
     dZoom: 0, // 画布缩放百分比
+    dPaddingTop: 0, // 画布垂直居中修正值
     dScreen: {
       width: 0, // 记录编辑界面的宽度
       height: 0, // 记录编辑界面的高度
@@ -80,6 +81,9 @@ const all = {
     },
     dZoom(state) {
       return state.dZoom
+    },
+    dPaddingTop(state: any) {
+      return state.dPaddingTop
     },
     dScreen(state) {
       return state.dScreen

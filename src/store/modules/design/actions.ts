@@ -314,8 +314,10 @@ export default {
       } else {
         copyElement[i].parent = '-1'
       }
-      copyElement[i].top += 50
-      copyElement[i].left += 50
+      if (!container) {
+        copyElement[i].top += 50
+        copyElement[i].left += 50
+      }
     }
     store.state.dWidgets = store.state.dWidgets.concat(copyElement)
     store.state.dActiveElement = copyElement[0]

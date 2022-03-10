@@ -1,6 +1,7 @@
 <template>
-  <div id="page-design" ref="page-design">
+  <div id="page-design" ref="page-design" :style="{ paddingTop: dPaddingTop + 'px' }">
     <div
+      id="out-page"
       class="out-page"
       :style="{
         width: (dPage.width * dZoom) / 100 + 120 + 'px',
@@ -79,7 +80,7 @@ export default defineComponent({
     return {}
   },
   computed: {
-    ...mapGetters(['dPage', 'dZoom', 'dScreen', 'dWidgets', 'dActiveElement', 'dHoverUuid', 'dSelectWidgets', 'dAltDown']),
+    ...mapGetters(['dPaddingTop', 'dPage', 'dZoom', 'dScreen', 'dWidgets', 'dActiveElement', 'dHoverUuid', 'dSelectWidgets', 'dAltDown']),
   },
   mounted() {
     this.getScreen()

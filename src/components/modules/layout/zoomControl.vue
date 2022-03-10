@@ -123,6 +123,7 @@ export default {
         realValue = this.calcZoom()
       }
       this.updateZoom(realValue)
+      this.autoFixTop()
     },
     dScreen: {
       handler() {
@@ -153,6 +154,7 @@ export default {
       // 弹性尺寸即时修改
       if (this.activezoomIndex === this.zoomList.length - 1) {
         this.updateZoom(this.calcZoom())
+        this.autoFixTop()
       }
     },
     selectItem(index) {
@@ -164,6 +166,7 @@ export default {
       this.show = false
     },
     add() {
+      this.curAction = 'add'
       this.show = false
       if (this.activezoomIndex === this.zoomList.length - 2 || this.activezoomIndex === this.zoomList.length - 1) {
         this.activezoomIndex = this.zoomList.length
@@ -184,6 +187,7 @@ export default {
       }
     },
     sub() {
+      this.curAction = null
       this.show = false
       if (this.otherIndex === 0) {
         this.otherIndex = -1
@@ -223,6 +227,19 @@ export default {
 
       this.bestZoom = Math.min(widthZoom, heightZoom)
       return this.bestZoom
+    },
+    async autoFixTop() {
+      await this.$nextTick()
+      const presetPadding = 60
+      const el = document.getElementById('out-page')
+      const clientHeight = document.body.clientHeight - 54
+      const parentHeight = el.offsetParent.offsetHeight - 54
+      let padding = (parentHeight - el.offsetHeight) / 2
+      if (typeof this.curAction === 'undefined') {
+        padding += presetPadding / 2
+      }
+      this.curAction === 'add' && (padding -= presetPadding)
+      this.$store.commit('updatePaddingTop', padding > 0 ? padding : 0)
     },
   },
 }

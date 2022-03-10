@@ -3,7 +3,7 @@
  * @Date: 2021-07-14 15:16:43
  * @Description:
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-08 22:14:31
+ * @LastEditTime: 2022-03-09 17:51:04
  * @site: book.palxp.com / blog.palxp.com
  */
 /**
@@ -14,6 +14,9 @@ interface Iprops {
   state: {}
 }
 export default {
+  updatePaddingTop(state: Type.Object, num: number) {
+    state.dPaddingTop = num
+  },
   selectItem(state: Type.Object, { data, type }: any) {
     state.selectItem.data = data
     state.selectItem.type = type
