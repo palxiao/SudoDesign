@@ -3,7 +3,7 @@
  * @Date: 2021-07-14 15:16:43
  * @Description:
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-09 17:51:04
+ * @LastEditTime: 2022-03-11 10:47:47
  * @site: book.palxp.com / blog.palxp.com
  */
 /**
@@ -40,8 +40,12 @@ export default {
   setDPage(state: Type.Object, e: any) {
     state.dPage = e
   },
-  setShowMoveable(state: Type.Object, e: any) {
-    state.showMoveable = e
+  setShowMoveable(state: Type.Object, show: any) {
+    state.showMoveable = show
+    if (!show) {
+      // 失焦时需要设置面板也失去关联
+      state.dActiveElement = state.dPage
+    }
   },
   setShowRotatable(state: Type.Object, e: any) {
     state.showRotatable = e

@@ -3,7 +3,7 @@
  * @Date: 2021-08-27 15:16:07
  * @Description: 模板列表
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-10 23:21:19
+ * @LastEditTime: 2022-03-11 11:45:26
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -37,6 +37,7 @@ import { useRoute } from 'vue-router'
 // import chooseType from './components/chooseType.vue'
 import editModel from './components/editModel.vue'
 import searchHeader from './components/searchHeader.vue'
+import useConfirm from '@/common/methods/confirm'
 
 export default defineComponent({
   components: { ElDivider, editModel, searchHeader },
@@ -95,13 +96,19 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapGetters(['tempEditing']),
+    ...mapGetters(['tempEditing', 'dHistoryParams']),
   },
   methods: {
     ...mapActions(['selectWidget', 'updatePageData', 'setTemplate', 'pushHistory']),
     async selectItem(item: any) {
-      this.$store.commit('managerEdit', false)
       this.$store.commit('setShowMoveable', false) // 清理掉上一次的选择框
+      if (this.dHistoryParams.length > 0) {
+        const isPass = await useConfirm('提示', '使用模板后，当前页面将会被替换，是否继续', 'warning')
+        if (!isPass) {
+          return false
+        }
+      }
+      this.$store.commit('managerEdit', false)
       this.$store.commit('setDWidgets', [])
 
       this.setTempId(item.id)

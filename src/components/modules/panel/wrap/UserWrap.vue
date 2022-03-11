@@ -3,7 +3,7 @@
  * @Date: 2022-02-13 22:18:35
  * @Description: 我的
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-01 15:49:52
+ * @LastEditTime: 2022-03-11 11:31:53
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -33,6 +33,7 @@ import uploader from '@/components/common/Uploader'
 import api from '@/api'
 import wImage from '../../widgets/wImage/wImage.vue'
 import setImageData from '@/common/methods/DesignFeatures/setImage'
+import useConfirm from '@/common/methods/confirm'
 
 export default defineComponent({
   components: { uploader, ElTabPane, ElTabs },
@@ -125,7 +126,12 @@ export default defineComponent({
       setting.top = pH / 2 - img.height / 2
       store.dispatch('addWidget', setting)
     }
-    const deleteImg = ({ i, item }: any) => {
+    const deleteImg = async ({ i, item }: any) => {
+      store.commit('setShowMoveable', false) // 清理掉上一次的选择框
+      const isPass = await useConfirm('警告', '删除后不可找回，已引用资源将会失效，请谨慎操作', 'warning')
+      if (!isPass) {
+        return false
+      }
       const arr = item.url.split('/')
       let key = arr.splice(3, arr.length - 1).join('/')
       api.material.deleteMyPhoto({ id: item.id, key })
