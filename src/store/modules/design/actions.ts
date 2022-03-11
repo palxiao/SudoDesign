@@ -296,7 +296,8 @@ export default {
     const selectWidgets = store.state.dSelectWidgets
     const widget = store.state.dWidgets.find((item) => item.uuid === uuid)
     if (alt) {
-      if (uuid !== '-1' && widget.parent === '-1' && !widget.isContainer) {
+      if (uuid !== '-1' && widget.parent === '-1') {
+        // && !widget.isContainer
         if (selectWidgets.length === 0) {
           if (store.state.dActiveElement.uuid !== '-1') {
             selectWidgets.push(store.state.dActiveElement)

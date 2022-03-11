@@ -178,7 +178,7 @@ export default {
     this.params.rotate && (this.$refs.widget.style.transform += `rotate(${this.params.rotate})`)
   },
   methods: {
-    ...mapActions(['updateWidgetData']),
+    ...mapActions(['updateWidgetData', 'pushHistory']),
     updateRecord() {
       if (this.dActiveElement.uuid === this.params.uuid) {
         let record = this.dActiveElement.record
@@ -213,6 +213,9 @@ export default {
     },
     writeDone(e) {
       this.editable = false
+      setTimeout(() => {
+        this.pushHistory('文字修改')
+      }, 100)
       this.updateText(e)
     },
     dblclickText(e) {
