@@ -228,7 +228,7 @@ export default defineComponent({
           this.holdPosition = null // important
           setTimeout(() => {
             this.pushHistory()
-          }, 300)
+          }, 100)
         }
       })
       // .on('keyUp', (e) => {

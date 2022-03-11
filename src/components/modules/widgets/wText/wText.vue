@@ -156,7 +156,7 @@ export default {
   async mounted() {
     this.updateRecord()
     // await this.$nextTick()
-    console.log(this.params.textEffects)
+    // console.log(this.params.textEffects)
     if (this.params.textEffects && this.params.textEffects.length <= 2 && this.params.textEffects[0]) {
       const shadow = this.params.textEffects[0].shadow
       if (shadow) {

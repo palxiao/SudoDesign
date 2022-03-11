@@ -3,7 +3,7 @@
  * @Date: 2022-01-12 11:26:53
  * @Description: 顶部操作按钮组
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-10 09:31:37
+ * @LastEditTime: 2022-03-10 23:46:32
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -141,7 +141,7 @@ export default defineComponent({
         this.$store.commit('setDPage', data.page)
         id ? this.$store.commit('setDWidgets', data.widgets) : this.$store.dispatch('setTemplate', data.widgets)
         cb()
-        this.pushHistory()
+        this.pushHistory('请求加载load')
       }
     },
     // draw() {

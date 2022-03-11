@@ -1,6 +1,7 @@
 import { customAlphabet } from 'nanoid/non-secure'
 const nanoid = customAlphabet('1234567890abcdef', 12)
 import pushHistory from './methods/pushHistory'
+import handleHistory from './methods/handleHistory'
 
 export default {
   /**
@@ -8,62 +9,18 @@ export default {
    * 修改数据、移动完成后都会自动保存
    * 同时会保存当前激活的组件的uuid，方便撤回时自动激活
    */
-  pushHistory(store: any) {
-    pushHistory(store)
+  pushHistory(store: any, msg: string) {
+    pushHistory(store, msg)
   },
   /**
    * 操作历史记录
    * action为undo表示撤销
    * action为redo表示重做
    */
-  handleHistory(store, action) {
-    store.commit('setShowMoveable', false) // 清理掉上一次的选择框
-    const history = store.state.dHistory
-    const uuidHistory = store.state.dActiveUuidHistory
-    const pageHistory = store.state.dPageHistory
-    const historyParams = store.state.dHistoryParams
-
-    let uuid = '-1'
-    console.log(action, historyParams)
-
-    if (action === 'undo') {
-      // 下标向前移1
-      historyParams.index -= 1
-      // 如果下表大于等于0，直接取出历史记录
-      if (historyParams.index >= 0) {
-        store.state.dWidgets = JSON.parse(history[historyParams.index])
-        store.state.dPage = JSON.parse(pageHistory[historyParams.index + 1])
-        uuid = uuidHistory[historyParams.index]
-      } else if (historyParams.length < 10) {
-        // 否则如果历史记录长度小于10，则设置组件为空
-        historyParams.index = -1
-        store.state.dWidgets = []
-        store.state.dPage = JSON.parse(pageHistory[0])
-      } else {
-        historyParams.index = -1
-      }
-    } else if (action === 'redo') {
-      // 下标向后移1
-      historyParams.index += 1
-      // 如果下标小于历史记录列表长度，直接取出历史记录
-      if (historyParams.index < historyParams.length) {
-        store.state.dWidgets = JSON.parse(history[historyParams.index])
-        store.state.dPage = JSON.parse(pageHistory[historyParams.index + 1])
-        uuid = uuidHistory[historyParams.index]
-      } else {
-        // 否则设置下标为列表最后一项
-        historyParams.index = historyParams.length - 1
-        store.state.dWidgets = JSON.parse(history[historyParams.index])
-        store.state.dPage = JSON.parse(pageHistory[historyParams.index + 1])
-        uuid = uuidHistory[historyParams.index]
-      }
-    }
+  handleHistory(store: any, action: any) {
+    handleHistory(store, action)
     // 激活组件默认为page
-    // let element = store.state.dPage
-    // if (uuid !== '-1') {
-    //   element = store.state.dWidgets.find((item) => item.uuid === uuid)
-    // }
-    // store.state.dActiveElement = element
+    store.state.dActiveElement = store.state.dPage
   },
   updateZoom(store, zoom) {
     store.state.dZoom = zoom
@@ -80,7 +37,8 @@ export default {
     const page = store.state.dPage
     if (page[key] !== value || pushHistory) {
       page[key] = value
-      store.dispatch('pushHistory')
+      // 画布修改先不压入历史栈，因为替换模板后会重复压栈
+      // store.dispatch('pushHistory', 'updatePageData')
     }
   },
   updateWidgetData(store, { uuid, key, value, pushHistory }) {
@@ -123,7 +81,7 @@ export default {
       widget[key] = value
 
       setTimeout(() => {
-        pushHistory && store.dispatch('pushHistory')
+        pushHistory && store.dispatch('pushHistory', 'updateWidgetData')
       }, 100)
       // store.dispatch('reChangeCanvas')
     }
@@ -161,8 +119,8 @@ export default {
       }
     }
     setTimeout(() => {
-      store.dispatch('pushHistory')
-    }, 300)
+      store.dispatch('pushHistory', 'updateWidgetMultiple')
+    }, 100)
   },
   addWidget(store: any, setting: any) {
     setting.uuid = nanoid()
@@ -170,7 +128,7 @@ export default {
     const len = store.state.dWidgets.length
     store.state.dActiveElement = store.state.dWidgets[len - 1]
 
-    store.dispatch('pushHistory')
+    store.dispatch('pushHistory', 'addWidget')
     store.dispatch('reChangeCanvas')
   },
   addGroup(store: any, group: Type.Object) {
@@ -187,7 +145,7 @@ export default {
     // 选中组件
     const len = store.state.dWidgets.length
     store.state.dActiveElement = store.state.dWidgets[len - 1]
-    store.dispatch('pushHistory')
+    store.dispatch('pushHistory', 'addGroup')
     store.dispatch('reChangeCanvas')
   },
   // TODO: 选择模板
@@ -197,7 +155,7 @@ export default {
       item.text && (item.text = decodeURIComponent(item.text))
       store.state.dWidgets.push(item)
     })
-    // store.dispatch('pushHistory')
+    store.dispatch('pushHistory', 'setTemplate')
     store.dispatch('reChangeCanvas')
   },
   // TODO 删除
@@ -268,7 +226,7 @@ export default {
       store.dispatch('updateGroupSize', store.state.dActiveElement.uuid)
     }
 
-    store.dispatch('pushHistory')
+    store.dispatch('pushHistory', 'deleteWidget')
     store.dispatch('reChangeCanvas')
   },
   copyWidget(store) {
@@ -329,7 +287,7 @@ export default {
       store.state.dSelectWidgets = []
     }
 
-    store.dispatch('pushHistory')
+    store.dispatch('pushHistory', 'pasteWidget')
     store.dispatch('reChangeCanvas')
   },
   // TODO: 选中元件与取消选中
@@ -417,7 +375,7 @@ export default {
   // 组件移动结束
   stopDMove(store) {
     if (store.state.dMoving) {
-      store.dispatch('pushHistory')
+      store.dispatch('pushHistory', 'stopDMove')
     }
     store.state.dMoving = false
   },
@@ -546,7 +504,7 @@ export default {
   // 组件调整结束
   stopDResize(store) {
     if (store.state.dResizeing) {
-      store.dispatch('pushHistory')
+      store.dispatch('pushHistory', 'stopDResize')
     }
     store.state.dResizeing = false
   },
@@ -634,7 +592,7 @@ export default {
       target.left = left
       target.top = top
 
-      store.dispatch('pushHistory')
+      store.dispatch('pushHistory', 'updateAlign')
       store.dispatch('reChangeCanvas')
     }
   },
@@ -714,7 +672,7 @@ export default {
       store.state.dActiveElement = group
       store.state.dSelectWidgets = []
 
-      store.dispatch('pushHistory')
+      store.dispatch('pushHistory', 'realCombined')
       // store.dispatch('reChangeCanvas')
     }
   },

@@ -3,7 +3,7 @@
  * @Date: 2021-08-27 15:16:07
  * @Description: 模板列表
  * @LastEditors: ShawnPhang
- * @LastEditTime: 2022-03-01 15:33:13
+ * @LastEditTime: 2022-03-10 23:21:19
  * @site: book.palxp.com / blog.palxp.com
 -->
 <template>
@@ -98,7 +98,7 @@ export default defineComponent({
     ...mapGetters(['tempEditing']),
   },
   methods: {
-    ...mapActions(['selectWidget', 'updatePageData', 'setTemplate']),
+    ...mapActions(['selectWidget', 'updatePageData', 'setTemplate', 'pushHistory']),
     async selectItem(item: any) {
       this.$store.commit('managerEdit', false)
       this.$store.commit('setShowMoveable', false) // 清理掉上一次的选择框

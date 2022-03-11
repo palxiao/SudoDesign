@@ -3,7 +3,7 @@
     <div :style="style" class="top-nav">
       <div class="top-nav-wrap">
         <div class="top-left">
-          <div style="font-size: 14px" class="name" @click="jump2home">SODU DESIGN</div>
+          <div style="font-size: 14px" class="name" @click="jump2home">云设计Dev版</div>
           <div class="operation">
             <div :class="['operation-item', { disable: !undoable }]" @click="undoable ? handleHistory('undo') : ''"><i class="iconfont icon-undo" /></div>
             <div :class="['operation-item', { disable: !redoable }]" @click="redoable ? handleHistory('redo') : ''"><i class="iconfont icon-redo" /></div>
@@ -73,7 +73,7 @@ export default defineComponent({
   computed: {
     ...mapGetters(['dActiveElement', 'dHistoryParams', 'dCopyElement', 'dPage']),
     undoable() {
-      return !(this.dHistoryParams.index === -1 || (this.dHistoryParams === 0 && this.dHistoryParams.length === 10))
+      return !(this.dHistoryParams.index === -1 || (this.dHistoryParams === 0 && this.dHistoryParams.length === this.dHistoryParams.maxLength))
     },
     redoable() {
       return !(this.dHistoryParams.index === this.dHistoryParams.length - 1)
