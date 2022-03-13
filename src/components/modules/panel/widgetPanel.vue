@@ -14,7 +14,7 @@
       <text-list-wrap v-show="+activeWidgetClassify === 2" :active="+activeWidgetClassify === 2" />
       <photo-list-wrap v-show="+activeWidgetClassify === 3" :active="+activeWidgetClassify === 3" />
       <bg-img-list-wrap v-show="+activeWidgetClassify === 4" :active="+activeWidgetClassify === 4" />
-      <!-- <comp-list-wrap2 v-if="+activeWidgetClassify === 5" :style="getStyle(5)" /> -->
+      <tools-list-wrap v-show="+activeWidgetClassify === 5" :active="+activeWidgetClassify === 5" />
       <user-wrap v-show="+activeWidgetClassify === 6" :active="+activeWidgetClassify === 6" />
     </div>
     <div v-show="active" class="side-wrap"><div class="pack__up" @click="active = false">&lt;</div></div>
@@ -109,6 +109,7 @@ export default {
       color: #070707c9;
     }
     .classify-wrap {
+      user-select: none;
       width: 100%;
       .classify-item {
         align-items: center;
